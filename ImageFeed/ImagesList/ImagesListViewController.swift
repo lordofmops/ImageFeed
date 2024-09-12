@@ -18,10 +18,6 @@ class ImagesListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        tableView.estimatedRowHeight = 200
-//        tableView.rowHeight = UITableView.automaticDimension
-        
-        tableView.rowHeight = 200
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
 }
@@ -43,8 +39,6 @@ extension ImagesListViewController: UITableViewDataSource {
         
         imagesListCell.configCell(with: indexPath)
         
-//        imagesListCell.layer.cornerRadius = 16
-        
         return imagesListCell
     }
 }
@@ -53,6 +47,14 @@ extension ImagesListViewController: UITableViewDataSource {
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let image = UIImage(named: photosName[indexPath.row]) else {
+            return 0
+        }
+        
+        return (image.size.height * tableView.bounds.width) / image.size.width + 8
     }
 }
 
