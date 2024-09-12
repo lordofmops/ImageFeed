@@ -8,6 +8,8 @@
 import UIKit
 
 class ImagesListViewController: UIViewController {
+    // MARK: - Private variables
+    private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     
     // MARK: - Outlets
     @IBOutlet private var tableView: UITableView!
@@ -16,19 +18,18 @@ class ImagesListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.estimatedRowHeight = 200
-        tableView.rowHeight = UITableView.automaticDimension
-    }
-    
-    func configCell(for cell: ImagesListCell) {
+//        tableView.estimatedRowHeight = 200
+//        tableView.rowHeight = UITableView.automaticDimension
         
+        tableView.rowHeight = 200
+        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
 }
 
 // MARK: - UITableViewDataSource
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return photosName.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -40,7 +41,7 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        configCell(for: imagesListCell)
+        imagesListCell.configCell(with: indexPath)
         
 //        imagesListCell.layer.cornerRadius = 16
         
