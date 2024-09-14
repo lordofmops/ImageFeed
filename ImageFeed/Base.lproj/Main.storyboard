@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B1P-oJ-lcx">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -9,6 +9,24 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Tab Bar Controller-->
+        <scene sceneID="qoC-wc-ENT">
+            <objects>
+                <tabBarController id="B1P-oJ-lcx" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="2vK-Ei-XTl">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="KGN-wj-afw"/>
+                        <segue destination="ll6-Lb-0cW" kind="relationship" relationship="viewControllers" id="XgO-o5-0X1"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WLZ-0J-OGA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1300" y="-237"/>
+        </scene>
         <!--ImagesList-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -105,13 +123,14 @@
                             <constraint firstAttribute="trailing" secondItem="0MO-jy-CvA" secondAttribute="trailing" constant="16" id="mjf-Ep-igO"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="" image="Feed navigation (active)" id="ZBb-Qp-uC2"/>
                     <connections>
                         <outlet property="tableView" destination="0MO-jy-CvA" id="kFA-SC-rj5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="64.885496183206101" y="3.5211267605633805"/>
+            <point key="canvasLocation" x="-492" y="-589"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="B4w-Fh-HFk">
@@ -122,47 +141,38 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Profile picture" translatesAutoresizingMaskIntoConstraints="NO" id="d88-jd-KaE" userLabel="Profile picture">
-                                <rect key="frame" x="32" y="91" width="70" height="70"/>
+                                <rect key="frame" x="16" y="91" width="70" height="70"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="d88-jd-KaE" secondAttribute="height" multiplier="1:1" id="6lr-rf-7EL"/>
                                     <constraint firstAttribute="height" constant="70" id="qbn-gh-My7"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VNl-8n-m5j" userLabel="Exit button">
-                                <rect key="frame" x="329" y="114" width="24" height="24"/>
+                                <rect key="frame" x="330" y="104" width="44" height="44"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="24" id="R3U-jc-JfE"/>
+                                    <constraint firstAttribute="height" constant="44" id="R3U-jc-JfE"/>
                                     <constraint firstAttribute="width" secondItem="VNl-8n-m5j" secondAttribute="height" multiplier="1:1" id="VXx-XT-SQS"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="Exit button"/>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="MHf-g7-ZwX" userLabel="Profile description">
-                                <rect key="frame" x="16" y="169" width="329" height="70"/>
+                                <rect key="frame" x="16" y="169" width="353" height="73.666666666666686"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Дарья" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Ym-Qg-Z0o" userLabel="Name label">
-                                        <rect key="frame" x="0.0" y="0.0" width="329" height="18"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="18" id="id5-AF-ZeG"/>
-                                        </constraints>
+                                        <rect key="frame" x="0.0" y="0.0" width="353" height="27"/>
                                         <fontDescription key="fontDescription" name="SFPro-Bold" family="SF Pro" pointSize="23"/>
                                         <color key="textColor" name="YP White"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@lordofmops" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SRf-2P-SaH" userLabel="Nickname label">
-                                        <rect key="frame" x="0.0" y="26" width="329" height="18"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="18" id="mLB-Mq-rJj"/>
-                                        </constraints>
+                                        <rect key="frame" x="0.0" y="35" width="353" height="15.333333333333336"/>
                                         <fontDescription key="fontDescription" name="SFPro-Regular" family="SF Pro" pointSize="13"/>
                                         <color key="textColor" name="YP Gray"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uhD-hi-EXH" userLabel="Description label">
-                                        <rect key="frame" x="0.0" y="52" width="329" height="18"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="18" id="o2G-zG-MJ0"/>
-                                        </constraints>
+                                        <rect key="frame" x="0.0" y="58.33333333333335" width="353" height="15.333333333333336"/>
                                         <fontDescription key="fontDescription" name="SFPro-Regular" family="SF Pro" pointSize="13"/>
                                         <color key="textColor" name="YP White"/>
                                         <nil key="highlightedColor"/>
@@ -170,13 +180,10 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="AzV-Ob-tAr" userLabel="Favorites">
-                                <rect key="frame" x="16" y="263" width="345" height="27"/>
+                                <rect key="frame" x="16" y="266.66666666666669" width="361" height="27"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Избранное" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rsw-HR-RIC" userLabel="Favorites label">
-                                        <rect key="frame" x="0.0" y="0.0" width="345" height="27"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="22" id="ZdO-f9-Yfh"/>
-                                        </constraints>
+                                        <rect key="frame" x="0.0" y="0.0" width="361" height="27"/>
                                         <fontDescription key="fontDescription" name="SFPro-Bold" family="SF Pro" pointSize="23"/>
                                         <color key="textColor" name="YP White"/>
                                         <nil key="highlightedColor"/>
@@ -187,30 +194,39 @@
                         <viewLayoutGuide key="safeArea" id="Djp-Py-zCA"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="AzV-Ob-tAr" secondAttribute="trailing" constant="16" id="0wb-es-d2h"/>
-                            <constraint firstItem="d88-jd-KaE" firstAttribute="leading" secondItem="46Q-T6-AIZ" secondAttribute="leadingMargin" constant="16" id="2Fg-dw-EMn"/>
+                            <constraint firstAttribute="trailing" secondItem="AzV-Ob-tAr" secondAttribute="trailing" constant="16" id="0wb-es-d2h"/>
+                            <constraint firstItem="d88-jd-KaE" firstAttribute="leading" secondItem="46Q-T6-AIZ" secondAttribute="leading" constant="16" id="2Fg-dw-EMn"/>
                             <constraint firstItem="AzV-Ob-tAr" firstAttribute="top" secondItem="MHf-g7-ZwX" secondAttribute="bottom" constant="24" id="DzH-Xi-jzW"/>
-                            <constraint firstItem="Djp-Py-zCA" firstAttribute="bottom" secondItem="AzV-Ob-tAr" secondAttribute="bottom" id="FIm-hf-dDQ"/>
                             <constraint firstItem="MHf-g7-ZwX" firstAttribute="leading" secondItem="46Q-T6-AIZ" secondAttribute="leading" constant="16" id="K9l-YW-x8b"/>
                             <constraint firstItem="d88-jd-KaE" firstAttribute="top" secondItem="Djp-Py-zCA" secondAttribute="top" constant="32" id="Obc-UW-qHm"/>
                             <constraint firstItem="VNl-8n-m5j" firstAttribute="centerY" secondItem="d88-jd-KaE" secondAttribute="centerY" id="RBl-OC-nhe"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="VNl-8n-m5j" secondAttribute="trailing" constant="24" id="dcI-U6-DeB"/>
+                            <constraint firstAttribute="trailing" secondItem="VNl-8n-m5j" secondAttribute="trailing" constant="19" id="dcI-U6-DeB"/>
                             <constraint firstItem="AzV-Ob-tAr" firstAttribute="leading" secondItem="46Q-T6-AIZ" secondAttribute="leading" constant="16" id="dqd-s0-Adb"/>
                             <constraint firstItem="MHf-g7-ZwX" firstAttribute="top" secondItem="d88-jd-KaE" secondAttribute="bottom" constant="8" id="fbl-GE-Ol4"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="MHf-g7-ZwX" secondAttribute="trailing" constant="32" id="uNw-mx-Ijd"/>
+                            <constraint firstAttribute="trailing" secondItem="MHf-g7-ZwX" secondAttribute="trailing" constant="24" id="uNw-mx-Ijd"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="" image="Profile navigation (active)" id="KN3-Md-FEF"/>
+                    <connections>
+                        <outlet property="exitButton" destination="VNl-8n-m5j" id="TOH-j2-SH1"/>
+                        <outlet property="nameLabel" destination="1Ym-Qg-Z0o" id="g2Y-TJ-pn6"/>
+                        <outlet property="nicknameLabel" destination="SRf-2P-SaH" id="oc7-zO-3gK"/>
+                        <outlet property="profileDescriptionLabel" destination="uhD-hi-EXH" id="7lz-em-TAZ"/>
+                        <outlet property="profilePicture" destination="d88-jd-KaE" id="sLq-yF-w9E"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oiu-MB-MUb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="733.58778625954199" y="-163.38028169014086"/>
+            <point key="canvasLocation" x="-492" y="130"/>
         </scene>
     </scenes>
     <resources>
         <image name="8" width="1621" height="1080"/>
         <image name="Exit button" width="24" height="24"/>
+        <image name="Feed navigation (active)" width="30" height="30"/>
         <image name="Like button (active)" width="42" height="42"/>
-        <image name="Profile picture" width="24" height="24"/>
+        <image name="Profile navigation (active)" width="30" height="30"/>
+        <image name="Profile picture" width="70" height="70"/>
         <namedColor name="YP Black">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
