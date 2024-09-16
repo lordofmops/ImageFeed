@@ -9,11 +9,11 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
-    @IBOutlet weak var profileDescriptionLabel: UILabel!
-    @IBOutlet weak var nicknameLabel: UILabel!
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var exitButton: UIButton!
-    @IBOutlet weak var profilePicture: UIImageView!
+    @IBOutlet private weak var profileDescriptionLabel: UILabel!
+    @IBOutlet private weak var nicknameLabel: UILabel!
+    @IBOutlet private weak var nameLabel: UILabel!
+    @IBOutlet private weak var exitButton: UIButton!
+    @IBOutlet private weak var profilePicture: UIImageView!
     
     override func viewDidLoad() {
         exitButton.setTitle("", for: .normal)
