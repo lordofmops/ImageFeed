@@ -143,10 +143,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uCP-8I-LHo">
-                                <rect key="frame" x="-20" y="-20" width="433" height="892"/>
+                                <rect key="frame" x="0.0" y="0.0" width="433" height="892"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="19" translatesAutoresizingMaskIntoConstraints="NO" id="0qu-t0-GYx">
-                                        <rect key="frame" x="20" y="20" width="391" height="853"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="391" height="853"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                 </subviews>
@@ -227,7 +227,6 @@
         <!--Profile View Controller-->
         <scene sceneID="B4w-Fh-HFk">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="oiu-MB-MUb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController id="ll6-Lb-0cW" customClass="ProfileViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="46Q-T6-AIZ">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
@@ -237,6 +236,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="Profile navigation (active)" id="KN3-Md-FEF"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oiu-MB-MUb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-492" y="130"/>
         </scene>
