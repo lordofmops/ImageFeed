@@ -9,14 +9,14 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
-    // MARK: Private variables
+    // MARK: - Private variables
     private var profileDescriptionLabel = UILabel()
     private var nicknameLabel = UILabel()
     private var nameLabel = UILabel()
     private var exitButton = UIButton()
     private var profilePicture = UIImageView()
     
-    // MARK: Lifecycle
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         setProfilePicture()
         setExitButton()
@@ -25,7 +25,7 @@ final class ProfileViewController: UIViewController {
         setProfileDescriptionLabel()
     }
     
-    // MARK: Private functions
+    // MARK: - Private functions
     private func setProfilePicture(){
         profilePicture.image = UIImage(named: "Profile picture")
         profilePicture.tintColor = .gray

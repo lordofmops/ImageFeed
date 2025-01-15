@@ -57,6 +57,11 @@ final class SingleImageViewController: UIViewController,
         
     }
     
+    // MARK: - Functions
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return imageView
+    }
+    
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         let scrollViewSize = scrollView.bounds.size
         let imageSize = imageView.frame.size
@@ -67,12 +72,8 @@ final class SingleImageViewController: UIViewController,
         scrollView.contentInset = UIEdgeInsets(top: y, left: x, bottom: y, right: x)
     }
     
-    // MARK: - Functions
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return imageView
-    }
-    
-    func rescaleImage(image: UIImage) {
+    // MARK: - Private functions
+    private func rescaleImage(image: UIImage) {
         view.layoutIfNeeded()
         let visibleRectSize = scrollView.bounds.size
         let imageSize = image.size
@@ -85,9 +86,6 @@ final class SingleImageViewController: UIViewController,
         
         let theoreticalScale = max(hScale, vScale)
         let scale = min(maxZoomScale, max(minZoomScale, theoreticalScale))
-        
-        print(imageSize.height, visibleRectSize.height)
-        print(theoreticalScale, scale)
         
         scrollView.setZoomScale(scale, animated: false)
         scrollView.layoutIfNeeded()
