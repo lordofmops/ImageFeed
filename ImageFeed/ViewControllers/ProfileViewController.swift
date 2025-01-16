@@ -10,11 +10,39 @@ import UIKit
 final class ProfileViewController: UIViewController {
     
     // MARK: - Private variables
-    private var profileDescriptionLabel = UILabel()
-    private var nicknameLabel = UILabel()
-    private var nameLabel = UILabel()
-    private var exitButton = UIButton()
-    private var profilePicture = UIImageView()
+    private lazy var profileDescriptionLabel : UILabel = {
+        let label = UILabel()
+        label.text = "description"
+        label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        label.textColor = UIColor(named: "YP White")
+        return label
+    }()
+    private lazy var nicknameLabel : UILabel = {
+        let label = UILabel()
+        label.text = "@lordofmopss"
+        label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        label.textColor = UIColor(named: "YP Gray")
+        return label
+    }()
+    private lazy var nameLabel : UILabel = {
+        let label = UILabel()
+        label.text = "Дарья"
+        label.font = UIFont.systemFont(ofSize: 23, weight: .bold)
+        label.textColor = UIColor(named: "YP White")
+        return label
+    }()
+    private lazy var exitButton : UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "Exit button"), for: .normal)
+        button.tintColor = UIColor(named: "YP Red")
+        return button
+    }()
+    private lazy var profilePicture : UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "Profile picture")
+        imageView.tintColor = .gray
+        return imageView
+    }()
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -27,9 +55,6 @@ final class ProfileViewController: UIViewController {
     
     // MARK: - Private functions
     private func setProfilePicture(){
-        profilePicture.image = UIImage(named: "Profile picture")
-        profilePicture.tintColor = .gray
-        
         profilePicture.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(profilePicture)
         
@@ -43,9 +68,6 @@ final class ProfileViewController: UIViewController {
     }
     
     private func setExitButton() {
-        exitButton.setImage(UIImage(named: "Exit button"), for: .normal)
-        exitButton.tintColor = UIColor(named: "YP Red")
-        
         exitButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(exitButton)
         
@@ -59,10 +81,6 @@ final class ProfileViewController: UIViewController {
     }
     
     private func setNameLabel() {
-        nameLabel.text = "Дарья"
-        nameLabel.font = UIFont.systemFont(ofSize: 23, weight: .bold)
-        nameLabel.textColor = UIColor(named: "YP White")
-        
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameLabel)
         
@@ -75,10 +93,6 @@ final class ProfileViewController: UIViewController {
     }
     
     private func setNicknameLabel() {
-        nicknameLabel.text = "@lordofmopss"
-        nicknameLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        nicknameLabel.textColor = UIColor(named: "YP Gray")
-        
         nicknameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nicknameLabel)
         
@@ -91,10 +105,6 @@ final class ProfileViewController: UIViewController {
     }
     
     private func setProfileDescriptionLabel() {
-        profileDescriptionLabel.text = "description"
-        profileDescriptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        profileDescriptionLabel.textColor = UIColor(named: "YP White")
-        
         profileDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(profileDescriptionLabel)
         

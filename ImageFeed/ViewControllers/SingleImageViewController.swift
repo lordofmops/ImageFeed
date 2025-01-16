@@ -19,8 +19,8 @@ final class SingleImageViewController: UIViewController,
     }
     
     // MARK: - Outlets
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var backwardButton: UIButton!
+    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private weak var backwardButton: UIButton!
     @IBOutlet private weak var exportButton: UIButton!
     @IBOutlet private weak var addToFavoritesButton: UIButton!
     @IBOutlet private weak var imageView: UIImageView!
@@ -33,10 +33,10 @@ final class SingleImageViewController: UIViewController,
         present(activityViewController, animated: true, completion: nil)
     }
     
-    @IBAction func didTapLikeButton(_ sender: Any) {
+    @IBAction private func didTapLikeButton(_ sender: Any) {
     }
     
-    @IBAction func didTapBackwardButton(_ sender: UIButton) {
+    @IBAction private func didTapBackwardButton(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
     
