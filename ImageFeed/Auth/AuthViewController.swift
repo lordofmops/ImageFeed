@@ -21,16 +21,29 @@ final class AuthViewController: UIViewController {
         button.backgroundColor = UIColor(named: "YP White")
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
+        
+        button.addTarget(self, action: #selector(navigateToAuthScreen), for: .touchUpInside)
+        
         return button
     }()
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
+        super.viewDidLoad()
         setLoginButton()
         setAuthLogo()
+        setBackwardButton()
     }
     
     // MARK: - Private functions
+    @objc
+    private func navigateToAuthScreen() {
+        let authScreen = WebViewViewController()
+        authScreen.delegate = self
+        
+        navigationController?.pushViewController(authScreen, animated: true)
+    }
+    
     private func setAuthLogo() {
         authLogo.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(authLogo)
@@ -56,5 +69,22 @@ final class AuthViewController: UIViewController {
             
             loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -90)
         ])
+    }
+    
+    private func setBackwardButton() {
+        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "Backward button (black)")
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "Backward button (black)")
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black")
+    }
+}
+
+extension AuthViewController: WebViewViewControllerDelegate {
+    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
+        //TODO: process code
+    }
+
+    func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
+        navigationController?.popViewController(animated: true)
     }
 }
