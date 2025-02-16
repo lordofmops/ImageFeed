@@ -20,10 +20,17 @@ final class WebViewViewController: UIViewController {
     weak var delegate: WebViewViewControllerDelegate?
     
     // MARK: - Private variables
-    private lazy var webView : WKWebView = {
+    private lazy var webView: WKWebView = {
         let webView = WKWebView()
         webView.backgroundColor = UIColor(named: "YP White")
         return webView
+    }()
+    
+    private lazy var progressView: UIProgressView = {
+        let progressView = UIProgressView()
+        progressView.progressTintColor = UIColor(named: "YP Black")
+        progressView.progress = 0.5
+        return progressView
     }()
     
     // MARK: - Lifecycle
@@ -31,6 +38,7 @@ final class WebViewViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "YP White")
         setWebView()
+        setProgressView()
         
         loadAuthView()
         webView.navigationDelegate = self
@@ -46,6 +54,17 @@ final class WebViewViewController: UIViewController {
             webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             webView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+    
+    private func setProgressView() {
+        progressView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(progressView)
+        
+        NSLayoutConstraint.activate([
+            progressView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            progressView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            progressView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
     
