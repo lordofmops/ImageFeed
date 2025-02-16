@@ -29,7 +29,6 @@ final class WebViewViewController: UIViewController {
     private lazy var progressView: UIProgressView = {
         let progressView = UIProgressView()
         progressView.progressTintColor = UIColor(named: "YP Black")
-        progressView.progress = 0.5
         return progressView
     }()
     
@@ -42,6 +41,35 @@ final class WebViewViewController: UIViewController {
         
         loadAuthView()
         webView.navigationDelegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        webView.addObserver(
+            self,
+            forKeyPath: #keyPath(WKWebView.estimatedProgress),
+            options: .new,
+            context: nil)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        webView.removeObserver(
+            self,
+            forKeyPath: #keyPath(WKWebView.estimatedProgress)
+        )
+    }
+    
+    // MARK: - Observe progress
+    override func observeValue(
+        forKeyPath keyPath: String?,
+        of object: Any?,
+        change: [NSKeyValueChangeKey : Any]?,
+        context: UnsafeMutableRawPointer?
+    ) {
+        if keyPath == #keyPath(WKWebView.estimatedProgress) {
+            updateProgress()
+        } else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+        }
     }
     
     // MARK: - Private functions
@@ -88,6 +116,11 @@ final class WebViewViewController: UIViewController {
 
         let request = URLRequest(url: url)
         webView.load(request)
+    }
+    
+    private func updateProgress() {
+        progressView.progress = Float(webView.estimatedProgress)
+        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
 }
 
