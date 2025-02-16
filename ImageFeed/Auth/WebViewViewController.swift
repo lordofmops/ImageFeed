@@ -40,7 +40,6 @@ final class WebViewViewController: UIViewController {
         setProgressView()
         
         loadAuthView()
-        webView.navigationDelegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,6 +73,8 @@ final class WebViewViewController: UIViewController {
     
     // MARK: - Private functions
     private func setWebView() {
+        webView.navigationDelegate = self
+        
         webView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(webView)
         
@@ -115,6 +116,9 @@ final class WebViewViewController: UIViewController {
         }
 
         let request = URLRequest(url: url)
+        
+        print("Auth URL: \(url.absoluteString)")
+
         webView.load(request)
     }
     
@@ -129,11 +133,11 @@ extension WebViewViewController: WKNavigationDelegate {
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping @MainActor (WKNavigationActionPolicy) -> Void) {
         if let code = code(from: navigationAction) {
-                    //TODO: process code
-                    decisionHandler(.cancel)
-              } else {
-                    decisionHandler(.allow)
-                }
+            delegate?.webViewViewController(self, didAuthenticateWithCode: code)
+            decisionHandler(.cancel)
+        } else {
+            decisionHandler(.allow)
+        }
     }
     
     private func code(from navigationAction: WKNavigationAction) -> String? {
