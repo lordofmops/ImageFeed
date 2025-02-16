@@ -6,9 +6,12 @@
 //
 import UIKit
 
+protocol AuthViewControllerDelegate: AnyObject {
+    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
+}
+
 final class AuthViewController: UIViewController {
-    // MARK: - Private variables
-    private let oauth2Service = OAuth2Service.shared
+    weak var delegate: AuthViewControllerDelegate?
     
     private lazy var authLogo : UIImageView = {
         let logo = UIImageView(image: UIImage(named: "Unsplash logo"))
@@ -83,17 +86,7 @@ final class AuthViewController: UIViewController {
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        oauth2Service.fetchOAuthToken(code: code) { [weak self] result in
-            guard let self else { return }
-            
-            switch result {
-            case .success(let token):
-                print("Auth token: \(token)")
-                print("Token in UserDefaults: \(oauth2Service.authStorage.token)")
-            case .failure(let error):
-                print("Fetching auth token error: \(error)")
-            }
-        }
+        delegate?.authViewController(self, didAuthenticateWithCode: code)
     }
 
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
