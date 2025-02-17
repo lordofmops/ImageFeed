@@ -35,6 +35,8 @@ final class AuthViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = UIColor(named: "YP Black")
         setLoginButton()
         setAuthLogo()
         setBackwardButton()
@@ -58,7 +60,7 @@ final class AuthViewController: UIViewController {
             authLogo.widthAnchor.constraint(equalToConstant: 60),
             
             authLogo.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            authLogo.bottomAnchor.constraint(equalTo: loginButton.topAnchor, constant: -300)
+            authLogo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 332)
         ])
     }
     

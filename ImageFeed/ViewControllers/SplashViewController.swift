@@ -46,11 +46,11 @@ final class SplashViewController: UIViewController {
         view.addSubview(logo)
         
         NSLayoutConstraint.activate([
-            logo.heightAnchor.constraint(equalToConstant: 75.11),
-            logo.widthAnchor.constraint(equalToConstant: 72.52),
+            logo.heightAnchor.constraint(equalToConstant: 77.68),
+            logo.widthAnchor.constraint(equalToConstant: 75),
             
             logo.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logo.topAnchor.constraint(equalTo: view.topAnchor, constant: 272)
+            logo.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
     

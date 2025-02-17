@@ -5,7 +5,7 @@
 //  Created by Дарья Дробышева on 16.01.2025.
 //
 
-import UIKit
+import Foundation
 
 enum Constants {
     static let accessKey = "hoqRvUB9lpsXDoryE6JEUECulgM3k-hOFWTEP2yNSDY"

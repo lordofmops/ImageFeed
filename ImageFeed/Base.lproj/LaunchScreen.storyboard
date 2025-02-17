@@ -18,17 +18,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Vector" translatesAutoresizingMaskIntoConstraints="NO" id="YT3-OE-Ynj">
-                                <rect key="frame" x="160.33333333333334" y="272" width="72.333333333333343" height="75"/>
+                                <rect key="frame" x="159" y="387.66666666666669" width="75" height="77"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="75.109999999999999" id="oeb-HN-6xA"/>
-                                    <constraint firstAttribute="width" constant="72.519999999999996" id="qHF-im-HdA"/>
+                                    <constraint firstAttribute="height" constant="77" id="oeb-HN-6xA"/>
+                                    <constraint firstAttribute="width" constant="75" id="qHF-im-HdA"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
-                            <constraint firstItem="YT3-OE-Ynj" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" constant="272" id="Q38-zF-iNO"/>
+                            <constraint firstItem="YT3-OE-Ynj" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="ZeR-pt-C6I"/>
                             <constraint firstItem="YT3-OE-Ynj" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="cdu-69-lNt"/>
                         </constraints>
                     </view>

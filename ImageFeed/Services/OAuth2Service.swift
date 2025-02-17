@@ -6,14 +6,6 @@
 //
 import Foundation
 
-struct OAuthTokenResponseBody: Decodable {
-    let accessToken: String
-
-    enum CodingKeys: String, CodingKey {
-        case accessToken = "access_token"
-    }
-}
-
 final class OAuth2Service {
     static let shared = OAuth2Service()
     
@@ -61,9 +53,11 @@ final class OAuth2Service {
                     self.authStorage.token = response.accessToken
                     completion(.success(response.accessToken))
                 } catch {
+                    print("Failed to decode OAuthTokenResponseBody: \(error)")
                     completion(.failure(error))
                 }
             case .failure(let error):
+                print("Network request failed: \(error)")
                 completion(.failure(error))
             }
         }
