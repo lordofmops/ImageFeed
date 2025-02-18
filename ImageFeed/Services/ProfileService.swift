@@ -12,8 +12,8 @@ enum ProfileServiceError: Error {
 
 final class ProfileService {
     static let shared = ProfileService()
-    var profile: Profile?
     
+    private(set) var profile: Profile?
     private var task: URLSessionTask?
     private var lastToken: String?
     
@@ -51,6 +51,7 @@ final class ProfileService {
                             loginName: "@\(response.username)",
                             bio: response.bio
                         )
+                        self.profile = profile
                         completion(.success(profile))
                     } catch {
                         print("Failed to decode ProfileResult: \(error)")

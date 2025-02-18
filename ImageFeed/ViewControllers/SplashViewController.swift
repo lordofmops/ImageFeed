@@ -10,6 +10,7 @@ import ProgressHUD
 final class SplashViewController: UIViewController {
     // MARK: - Private variables
     private let oauth2Service = OAuth2Service.shared
+    private let profileService = ProfileService.shared
     private let oauth2Storage = OAuth2TokenStorage()
     
     private lazy var logo : UIImageView = {
@@ -101,15 +102,35 @@ extension SplashViewController: AuthViewControllerDelegate {
         oauth2Service.fetchOAuthToken(code: code) { [weak self] result in
             guard let self else { return }
             
-            UIBlockingProgressHUD.dismiss()
-            
             switch result {
             case .success(let token):
                 print("Auth token: \(token)")
-                self.switchToTabBarController()
+                self.fetchProfile {
+                    UIBlockingProgressHUD.dismiss()
+                }
             case .failure(let error):
                 print("Fetching auth token error: \(error)")
             }
         }
+    }
+    
+    private func fetchProfile(completion: @escaping () -> Void) {
+        guard let token = oauth2Storage.token else {
+            print("No token found")
+            return
+        }
+        
+        profileService.fetchProfile(token) { [weak self] result in
+            guard let self else { return }
+            
+            switch result {
+            case .success(let profile):
+                print("Username: \(profile.loginName)")
+                self.switchToTabBarController()
+            case .failure(let error):
+                print("Failed to fetch profile: \(error)")
+            }
+        }
+        completion()
     }
 }

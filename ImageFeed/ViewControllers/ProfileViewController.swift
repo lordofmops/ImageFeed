@@ -56,7 +56,10 @@ final class ProfileViewController: UIViewController {
         setNicknameLabel()
         setProfileDescriptionLabel()
         
-        fetchProfile()
+        if let profile = profileService.profile {
+            self.profile = profile
+            updateProfileData()
+        }
     }
     
     // MARK: - Private functions
@@ -122,27 +125,35 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
-    private func fetchProfile() {
-        guard let token = tokenStorage.token else {
-            print("No token found")
-            return
-        }
+    private func updateProfileData() {
+        guard let profile else { return }
         
-        profileService.fetchProfile(token) { [weak self] result in
-            guard let self else { return }
-            
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let profile):
-                    self.profile = profile
-                    
-                    self.nameLabel.text = profile.name
-                    self.nicknameLabel.text = profile.loginName
-                    self.profileDescriptionLabel.text = profile.bio
-                case .failure(let error):
-                    print("Failed to fetch profile: \(error)")
-                }
-            }
-        }
+        profileDescriptionLabel.text = profile.bio
+        nicknameLabel.text = profile.loginName
+        nameLabel.text = profile.name
     }
+    
+//    private func fetchProfile() {
+//        guard let token = tokenStorage.token else {
+//            print("No token found")
+//            return
+//        }
+//        
+//        profileService.fetchProfile(token) { [weak self] result in
+//            guard let self else { return }
+//            
+//            DispatchQueue.main.async {
+//                switch result {
+//                case .success(let profile):
+//                    self.profile = profile
+//                    
+//                    self.nameLabel.text = profile.name
+//                    self.nicknameLabel.text = profile.loginName
+//                    self.profileDescriptionLabel.text = profile.bio
+//                case .failure(let error):
+//                    print("Failed to fetch profile: \(error)")
+//                }
+//            }
+//        }
+//    }
 }
