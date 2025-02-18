@@ -6,8 +6,15 @@
 //
 import Foundation
 
+enum AuthServiceError: Error {
+    case invalidRequest
+}
+
 final class OAuth2Service {
     static let shared = OAuth2Service()
+    
+    private var task: URLSessionTask?
+    private var lastCode: String?
     
     let authStorage = OAuth2TokenStorage()
     
@@ -38,30 +45,44 @@ final class OAuth2Service {
      }
     
     func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
-        guard let request = makeOAuthTokenRequest(code: code) else {
-            print("Failed to create request")
+        assert(Thread.isMainThread)
+        guard lastCode != code else {
+            completion(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+
+        task?.cancel()                                      
+        lastCode = code
+        guard
+            let request = makeOAuthTokenRequest(code: code)
+        else {
+            completion(.failure(AuthServiceError.invalidRequest))
             return
         }
         
         let task = URLSession.shared.data(for: request) { [weak self] result in
-            guard let self else { return }
-            
-            switch result {
-            case .success(let data):
-                do {
-                    let response = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                    self.authStorage.token = response.accessToken
-                    completion(.success(response.accessToken))
-                } catch {
-                    print("Failed to decode OAuthTokenResponseBody: \(error)")
+            DispatchQueue.main.async {
+                guard let self else { return }
+                
+                switch result {
+                case .success(let data):
+                    do {
+                        let response = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
+                        self.authStorage.token = response.accessToken
+                        completion(.success(response.accessToken))
+                    } catch {
+                        print("Failed to decode OAuthTokenResponseBody: \(error)")
+                        completion(.failure(error))
+                    }
+                case .failure(let error):
+                    print("Network request failed: \(error)")
                     completion(.failure(error))
                 }
-            case .failure(let error):
-                print("Network request failed: \(error)")
-                completion(.failure(error))
+                self.task = nil
+                self.lastCode = nil
             }
         }
-        
+        self.task = task
         task.resume()
     }
 }
