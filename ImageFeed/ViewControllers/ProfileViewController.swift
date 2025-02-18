@@ -10,6 +10,10 @@ import UIKit
 final class ProfileViewController: UIViewController {
     
     // MARK: - Private variables
+    private var profile: Profile?
+    private let profileService = ProfileService.shared
+    private let tokenStorage = OAuth2TokenStorage()
+    
     private lazy var profileDescriptionLabel : UILabel = {
         let label = UILabel()
         label.text = "description"
@@ -51,6 +55,8 @@ final class ProfileViewController: UIViewController {
         setNameLabel()
         setNicknameLabel()
         setProfileDescriptionLabel()
+        
+        fetchProfile()
     }
     
     // MARK: - Private functions
@@ -114,5 +120,29 @@ final class ProfileViewController: UIViewController {
             profileDescriptionLabel.leadingAnchor.constraint(equalTo: profilePicture.leadingAnchor),
             profileDescriptionLabel.topAnchor.constraint(equalTo: nicknameLabel.bottomAnchor, constant: 8)
         ])
+    }
+    
+    private func fetchProfile() {
+        guard let token = tokenStorage.token else {
+            print("No token found")
+            return
+        }
+        
+        profileService.fetchProfile(token) { [weak self] result in
+            guard let self else { return }
+            
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let profile):
+                    self.profile = profile
+                    
+                    self.nameLabel.text = profile.name
+                    self.nicknameLabel.text = profile.loginName
+                    self.profileDescriptionLabel.text = profile.bio
+                case .failure(let error):
+                    print("Failed to fetch profile: \(error)")
+                }
+            }
+        }
     }
 }
