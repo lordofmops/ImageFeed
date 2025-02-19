@@ -17,9 +17,11 @@ final class ImagesListService {
     private init() {}
     
     func fetchPhotosNextPage() {
-        if let task {
+        assert(Thread.isMainThread)
+        
+        if task != nil {
             print("Images list request already in progress")
-            task.cancel()
+            return
         }
         
         let nextPage = (lastLoadedPage ?? 0) + 1
@@ -39,19 +41,21 @@ final class ImagesListService {
                     self.photos.append(contentsOf: newPhotos)
                     
                     self.lastLoadedPage = nextPage
+                    print("Page \(nextPage) loaded")
                     
-                    NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: self)
+                    NotificationCenter.default
+                        .post(
+                            name: ImagesListService.didChangeNotification,
+                            object: self
+                        )
                 case .failure(let error):
                     print("Network request failed: \(error)")
                 }
-                
-                // Сбрасываем флаг загрузки
-                self.isLoading = false
+                self.task = nil
             }
         }
-        // Сохраняем задачу
+        
         self.task = task
-        // Запускаем запрос
         task.resume()
     }
     
@@ -61,14 +65,14 @@ final class ImagesListService {
             return nil
         }
 
-//        guard let token = OAuth2TokenStorage().token else {
-//            print("No auth token found")
-//            return nil
-//        }
+        guard let token = OAuth2TokenStorage().token else {
+            print("No auth token found")
+            return nil
+        }
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-//        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
 }
