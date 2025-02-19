@@ -44,6 +44,12 @@ final class ProfileImageService {
                     }
                     self.imageURL = image
                     completion(.success(image))
+                    NotificationCenter.default
+                        .post(
+                            name: ProfileImageService.didChangeNotification,
+                            object: self,
+                            userInfo: ["URL": image]
+                        )
                 case .failure(let error):
                     print("Network request failed: \(error)")
                     completion(.failure(error))

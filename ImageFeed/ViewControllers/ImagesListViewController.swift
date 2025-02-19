@@ -9,6 +9,7 @@ import UIKit
 
 final class ImagesListViewController: UIViewController {
     // MARK: - Private variables
+    private let imagesListService = ImagesListService.shared
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
     
@@ -73,5 +74,15 @@ extension ImagesListViewController: UITableViewDelegate {
         }
         
         return (image.size.height * tableView.bounds.width) / image.size.width + 8
+    }
+    
+    func tableView(
+      _ tableView: UITableView,
+      willDisplay cell: UITableViewCell,
+      forRowAt indexPath: IndexPath
+    ) {
+        if indexPath.row + 1 == imagesListService.photos.count {
+            imagesListService.fetchPhotosNextPage()
+        }
     }
 }

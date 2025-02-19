@@ -40,12 +40,7 @@ final class ProfileService {
                 
                 switch result {
                 case .success(let response):
-                    let profile = Profile(
-                        username: response.username,
-                        name: [response.firstName, response.lastName].compactMap { $0 }.joined(separator: " "),
-                        loginName: "@\(response.username)",
-                        bio: response.bio
-                    )
+                    let profile = Profile(from: response)
                     self.profile = profile
                     completion(.success(profile))
                 case .failure(let error):
