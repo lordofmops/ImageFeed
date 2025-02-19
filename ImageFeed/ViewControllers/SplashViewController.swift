@@ -59,7 +59,12 @@ final class SplashViewController: UIViewController {
     
     private func checkAuthorization() {
         if let _ = oauth2Storage.token {
-            switchToTabBarController()
+            UIBlockingProgressHUD.show()
+            self.fetchProfile {
+                UIBlockingProgressHUD.dismiss()
+                self.switchToTabBarController()
+            }
+            
         } else {
             showAuthScreen()
         }
@@ -134,8 +139,8 @@ extension SplashViewController: AuthViewControllerDelegate {
             case .failure(let error):
                 print("Failed to fetch profile: \(error)")
             }
+            completion()
         }
-        completion()
     }
     
     private func fetchProfileImage(for username: String) {
