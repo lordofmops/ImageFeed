@@ -84,6 +84,18 @@ final class AuthViewController: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black")
     }
+    
+    private func showAuthErrorAlert() {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так",
+            message: "Не удалось войти в систему",
+            preferredStyle: .alert
+        )
+        let okAction = UIAlertAction(title: "Ок", style: .default, handler: nil)
+        alert.addAction(okAction)
+
+        present(alert, animated: true)
+    }
 }
 
 extension AuthViewController: WebViewViewControllerDelegate {
@@ -95,4 +107,9 @@ extension AuthViewController: WebViewViewControllerDelegate {
         print("User cancelled authentication")
         navigationController?.popViewController(animated: true)
     }
+    
+    func webViewViewController(_ vc: WebViewViewController, didFailWithError error: Error) {
+            print("Authentication failed: \(error.localizedDescription)")
+            showAuthErrorAlert()
+        }
 }
