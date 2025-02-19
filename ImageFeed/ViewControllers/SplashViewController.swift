@@ -11,6 +11,7 @@ final class SplashViewController: UIViewController {
     // MARK: - Private variables
     private let oauth2Service = OAuth2Service.shared
     private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
     private let oauth2Storage = OAuth2TokenStorage()
     
     private lazy var logo : UIImageView = {
@@ -57,7 +58,7 @@ final class SplashViewController: UIViewController {
     }
     
     private func checkAuthorization() {
-        if let token = oauth2Storage.token {
+        if let _ = oauth2Storage.token {
             switchToTabBarController()
         } else {
             showAuthScreen()
@@ -126,11 +127,25 @@ extension SplashViewController: AuthViewControllerDelegate {
             switch result {
             case .success(let profile):
                 print("Username: \(profile.loginName)")
+                
+                fetchProfileImage(for: profile.username)
+                
                 self.switchToTabBarController()
             case .failure(let error):
                 print("Failed to fetch profile: \(error)")
             }
         }
         completion()
+    }
+    
+    private func fetchProfileImage(for username: String) {
+        profileImageService.fetchProfileImageURL(username: username) { result in
+            switch result {
+            case .success(let imageURL):
+                print("Avatar URL: \(imageURL)")
+            case .failure(let error):
+                print("Failed to fetch avatar URL: \(error)")
+            }
+        }
     }
 }
