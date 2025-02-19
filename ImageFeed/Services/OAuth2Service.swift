@@ -6,10 +6,6 @@
 //
 import Foundation
 
-enum AuthServiceError: Error {
-    case invalidRequest
-}
-
 final class OAuth2Service {
     static let shared = OAuth2Service()
     
@@ -47,41 +43,40 @@ final class OAuth2Service {
     func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         guard lastCode != code else {
-            completion(.failure(AuthServiceError.invalidRequest))
+            print("Auth request already in progress with the same code")
+            completion(.failure(NetworkServiceError.invalidRequest))
             return
         }
 
         task?.cancel()                                      
         lastCode = code
+        
         guard
             let request = makeOAuthTokenRequest(code: code)
         else {
-            completion(.failure(AuthServiceError.invalidRequest))
+            print("Failed to make auth token request")
+            completion(.failure(NetworkServiceError.invalidRequest))
             return
         }
         
-        let task = URLSession.shared.data(for: request) { [weak self] result in
+        let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             DispatchQueue.main.async {
                 guard let self else { return }
-                
+
                 switch result {
-                case .success(let data):
-                    do {
-                        let response = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                        self.authStorage.token = response.accessToken
-                        completion(.success(response.accessToken))
-                    } catch {
-                        print("Failed to decode OAuthTokenResponseBody: \(error)")
-                        completion(.failure(error))
-                    }
+                case .success(let response):
+                    self.authStorage.token = response.accessToken
+                    completion(.success(response.accessToken))
                 case .failure(let error):
                     print("Network request failed: \(error)")
                     completion(.failure(error))
                 }
+
                 self.task = nil
                 self.lastCode = nil
             }
         }
+
         self.task = task
         task.resume()
     }

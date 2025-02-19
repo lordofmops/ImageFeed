@@ -6,10 +6,6 @@
 //
 import Foundation
 
-enum ProfileServiceError: Error {
-    case invalidRequest
-}
-
 final class ProfileService {
     static let shared = ProfileService()
     
@@ -23,7 +19,7 @@ final class ProfileService {
         assert(Thread.isMainThread)
         guard lastToken != token else {
             print("Profile request already in progress with the same token")
-            completion(.failure(AuthServiceError.invalidRequest))
+            completion(.failure(NetworkServiceError.invalidRequest))
             return
         }
 
@@ -33,34 +29,30 @@ final class ProfileService {
         guard
             let request = makeProfileRequest(token: token)
         else {
-            completion(.failure(ProfileServiceError.invalidRequest))
+            print("Failed to make profile request")
+            completion(.failure(NetworkServiceError.invalidRequest))
             return
         }
         
-        let task = URLSession.shared.data(for: request) { [weak self] result in
+        let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
             DispatchQueue.main.async {
                 guard let self else { return }
                 
                 switch result {
-                case .success(let data):
-                    do {
-                        let response = try JSONDecoder().decode(ProfileResult.self, from: data)
-                        let profile = Profile(
-                            username: response.username,
-                            name: [response.firstName, response.lastName].compactMap { $0 }.joined(separator: " "),
-                            loginName: "@\(response.username)",
-                            bio: response.bio
-                        )
-                        self.profile = profile
-                        completion(.success(profile))
-                    } catch {
-                        print("Failed to decode ProfileResult: \(error)")
-                        completion(.failure(error))
-                    }
+                case .success(let response):
+                    let profile = Profile(
+                        username: response.username,
+                        name: [response.firstName, response.lastName].compactMap { $0 }.joined(separator: " "),
+                        loginName: "@\(response.username)",
+                        bio: response.bio
+                    )
+                    self.profile = profile
+                    completion(.success(profile))
                 case .failure(let error):
                     print("Network request failed: \(error)")
                     completion(.failure(error))
                 }
+                
                 self.task = nil
                 self.lastToken = nil
             }
