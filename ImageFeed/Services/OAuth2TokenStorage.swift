@@ -5,20 +5,27 @@
 //  Created by Дарья Дробышева on 16.02.2025.
 //
 import Foundation
+import SwiftKeychainWrapper
 
 final class OAuth2TokenStorage {
     var token: String? {
         get {
-            storage.string(forKey: Keys.accessToken.rawValue)
+            return KeychainWrapper.standard.string(forKey: "Auth token")
         }
         set {
-            storage.set(newValue, forKey: Keys.accessToken.rawValue)
+            if let newValue {
+                print(
+                    KeychainWrapper.standard.set(newValue, forKey: "Auth token")
+                    ? "Auth token successfully saved"
+                    : "Failed to save auth token"
+                )
+            } else {
+                print(
+                    KeychainWrapper.standard.removeObject(forKey: "Auth token")
+                    ? "Auth token successfully removed"
+                    : "Failed to remove auth token"
+                )
+            }
         }
-    }
-    
-    private let storage: UserDefaults = .standard
-    
-    private enum Keys: String {
-        case accessToken
     }
 }
