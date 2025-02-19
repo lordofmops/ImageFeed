@@ -60,7 +60,7 @@ final class AuthViewController: UIViewController {
             authLogo.widthAnchor.constraint(equalToConstant: 60),
             
             authLogo.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            authLogo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 332)
+            authLogo.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
     
