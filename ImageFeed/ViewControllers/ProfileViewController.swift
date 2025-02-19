@@ -13,6 +13,7 @@ final class ProfileViewController: UIViewController {
     private var profile: Profile?
     private let profileService = ProfileService.shared
     private let tokenStorage = OAuth2TokenStorage()
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     private lazy var profileDescriptionLabel : UILabel = {
         let label = UILabel()
@@ -60,6 +61,17 @@ final class ProfileViewController: UIViewController {
             self.profile = profile
             updateProfileData()
         }
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateImage()
+            }
+        updateImage()
     }
     
     // MARK: - Private functions
@@ -133,27 +145,11 @@ final class ProfileViewController: UIViewController {
         nameLabel.text = profile.name
     }
     
-//    private func fetchProfile() {
-//        guard let token = tokenStorage.token else {
-//            print("No token found")
-//            return
-//        }
-//        
-//        profileService.fetchProfile(token) { [weak self] result in
-//            guard let self else { return }
-//            
-//            DispatchQueue.main.async {
-//                switch result {
-//                case .success(let profile):
-//                    self.profile = profile
-//                    
-//                    self.nameLabel.text = profile.name
-//                    self.nicknameLabel.text = profile.loginName
-//                    self.profileDescriptionLabel.text = profile.bio
-//                case .failure(let error):
-//                    print("Failed to fetch profile: \(error)")
-//                }
-//            }
-//        }
-//    }
+    private func updateImage() {
+        guard
+            let profileImageURL = ProfileImageService.shared.imageURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        // TODO [Sprint 11] Обновить аватар, используя Kingfisher
+    }
 }
