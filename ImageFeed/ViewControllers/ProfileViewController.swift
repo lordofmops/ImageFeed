@@ -6,27 +6,30 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
     // MARK: - Private variables
+    private var profile: Profile?
+    private let profileService = ProfileService.shared
+    private let tokenStorage = OAuth2TokenStorage()
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     private lazy var profileDescriptionLabel : UILabel = {
         let label = UILabel()
-        label.text = "description"
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         label.textColor = UIColor(named: "YP White")
         return label
     }()
     private lazy var nicknameLabel : UILabel = {
         let label = UILabel()
-        label.text = "@lordofmopss"
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         label.textColor = UIColor(named: "YP Gray")
         return label
     }()
     private lazy var nameLabel : UILabel = {
         let label = UILabel()
-        label.text = "Дарья"
         label.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         label.textColor = UIColor(named: "YP White")
         return label
@@ -46,11 +49,30 @@ final class ProfileViewController: UIViewController {
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
+        // UI setup
+        view.backgroundColor = UIColor(named: "YP Black")
         setProfilePicture()
         setExitButton()
         setNameLabel()
         setNicknameLabel()
         setProfileDescriptionLabel()
+        
+        // Fetching data
+        if let profile = profileService.profile {
+            self.profile = profile
+            updateProfileData()
+        }
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateImage()
+            }
+        updateImage()
     }
     
     // MARK: - Private functions
@@ -114,5 +136,32 @@ final class ProfileViewController: UIViewController {
             profileDescriptionLabel.leadingAnchor.constraint(equalTo: profilePicture.leadingAnchor),
             profileDescriptionLabel.topAnchor.constraint(equalTo: nicknameLabel.bottomAnchor, constant: 8)
         ])
+    }
+    
+    private func updateProfileData() {
+        guard let profile else { return }
+        
+        profileDescriptionLabel.text = profile.bio
+        nicknameLabel.text = profile.loginName
+        nameLabel.text = profile.name
+    }
+    
+    private func updateImage() {
+        guard
+            let profileImageURL = ProfileImageService.shared.imageURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        
+        let placeholder = UIImage(named: "Backward button")
+        let processor = RoundCornerImageProcessor(cornerRadius: 61)
+        
+        profilePicture.kf.indicatorType = .activity
+        profilePicture.kf.setImage(
+            with: url,
+            placeholder: placeholder,
+            options: [
+                .processor(processor)
+            ]
+        )
     }
 }
