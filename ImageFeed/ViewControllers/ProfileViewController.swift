@@ -49,12 +49,15 @@ final class ProfileViewController: UIViewController {
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
+        // UI setup
+        view.backgroundColor = UIColor(named: "YP Black")
         setProfilePicture()
         setExitButton()
         setNameLabel()
         setNicknameLabel()
         setProfileDescriptionLabel()
         
+        // Fetching data
         if let profile = profileService.profile {
             self.profile = profile
             updateProfileData()
