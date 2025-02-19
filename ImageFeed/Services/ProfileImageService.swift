@@ -39,7 +39,7 @@ final class ProfileImageService {
 
                 switch result {
                 case .success(let response):
-                    guard let image = response.profileImage.small else {
+                    guard let image = response.profileImage.large else {
                         preconditionFailure("Failed to fetch profile image URL")
                     }
                     self.imageURL = image
