@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
@@ -17,21 +18,18 @@ final class ProfileViewController: UIViewController {
     
     private lazy var profileDescriptionLabel : UILabel = {
         let label = UILabel()
-        label.text = "description"
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         label.textColor = UIColor(named: "YP White")
         return label
     }()
     private lazy var nicknameLabel : UILabel = {
         let label = UILabel()
-        label.text = "@lordofmopss"
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         label.textColor = UIColor(named: "YP Gray")
         return label
     }()
     private lazy var nameLabel : UILabel = {
         let label = UILabel()
-        label.text = "Дарья"
         label.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         label.textColor = UIColor(named: "YP White")
         return label
@@ -150,6 +148,17 @@ final class ProfileViewController: UIViewController {
             let profileImageURL = ProfileImageService.shared.imageURL,
             let url = URL(string: profileImageURL)
         else { return }
-        // TODO [Sprint 11] Обновить аватар, используя Kingfisher
+        
+        let placeholder = UIImage(named: "Backward button")
+        let processor = RoundCornerImageProcessor(cornerRadius: 61)
+        
+        profilePicture.kf.indicatorType = .activity
+        profilePicture.kf.setImage(
+            with: url,
+            placeholder: placeholder,
+            options: [
+                .processor(processor)
+            ]
+        )
     }
 }
