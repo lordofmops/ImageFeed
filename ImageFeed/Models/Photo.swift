@@ -11,7 +11,7 @@ struct Photo {
     let size: CGSize
     let createdAt: Date?
     let welcomeDescription: String?
-    let thumbImageURL: String
+    let regularImageURL: String
     let largeImageURL: String
     let isLiked: Bool
 }
@@ -21,7 +21,7 @@ extension Photo {
         self.id = photoResult.id
         self.size = CGSize(width: CGFloat(photoResult.width), height: CGFloat(photoResult.height))
         self.welcomeDescription = photoResult.description
-        self.thumbImageURL = photoResult.urls.thumb
+        self.regularImageURL = photoResult.urls.regular
         self.largeImageURL = photoResult.urls.full
         self.isLiked = photoResult.likedByUser
         

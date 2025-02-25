@@ -14,6 +14,8 @@ final class ImagesListService {
     private var lastLoadedPage: Int?
     private(set) var photos: [Photo] = []
     
+    private var loadedPhotoIDs = Set<String>()
+    
     private init() {}
     
     func fetchPhotosNextPage() {
@@ -32,27 +34,30 @@ final class ImagesListService {
         }
         
         let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
-            DispatchQueue.main.async {
-                guard let self = self else { return }
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let response):
+                let newPhotos = response.map { Photo(from: $0) }
+                    .filter{ !self.loadedPhotoIDs.contains($0.id) }
                 
-                switch result {
-                case .success(let response):
-                    let newPhotos = response.map { Photo(from: $0) }
-                    self.photos.append(contentsOf: newPhotos)
-                    
-                    self.lastLoadedPage = nextPage
-                    print("Page \(nextPage) loaded")
-                    
-                    NotificationCenter.default
-                        .post(
-                            name: ImagesListService.didChangeNotification,
-                            object: self
-                        )
-                case .failure(let error):
-                    print("Network request failed: \(error)")
-                }
-                self.task = nil
+                self.photos.append(contentsOf: newPhotos)
+                
+                self.loadedPhotoIDs = Set<String>()
+                self.loadedPhotoIDs.formUnion(newPhotos.map{ $0.id })
+                
+                self.lastLoadedPage = nextPage
+                print("Page \(nextPage) loaded")
+                
+                NotificationCenter.default
+                    .post(
+                        name: ImagesListService.didChangeNotification,
+                        object: self
+                    )
+            case .failure(let error):
+                print("Network request failed: \(error)")
             }
+            self.task = nil
         }
         
         self.task = task
