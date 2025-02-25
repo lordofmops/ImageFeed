@@ -15,14 +15,26 @@ final class ImagesListViewController: UIViewController, ImagesListCellDelegate {
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
     private var imagesListServiceObserver: NSObjectProtocol?
     
-    // MARK: - Outlets
-    @IBOutlet var tableView: UITableView!
+    // MARK: - UI elements
+    let tableView: UITableView = {
+        let tableView = UITableView()
+        
+        tableView.backgroundColor = UIColor(named: "YP Black")
+        tableView.rowHeight = 200
+        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        tableView.separatorStyle = .none
+        
+        tableView.register(ImagesListCell.self, forCellReuseIdentifier: ImagesListCell.reuseIdentifier)
+        
+        return tableView
+    }()
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        
+        setupTableView()
         
         imagesListServiceObserver = NotificationCenter.default
         .addObserver(
@@ -38,25 +50,25 @@ final class ImagesListViewController: UIViewController, ImagesListCellDelegate {
         imagesListService.fetchPhotosNextPage()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showSingleImageSegueIdentifier {
-            guard
-                let viewController = segue.destination as? SingleImageViewController,
-                let indexPath = sender as? IndexPath
-            else {
-                assertionFailure("Invalid segue destination")
-                return
-            }
-
-//            guard let imageURL = URL(string: photos[indexPath.row].largeImageURL) else { return }
-//            
-//            viewController.imageURL = imageURL
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
+    // MARK: - Private functions
+    private func setupTableView() {
+        view.backgroundColor = UIColor(named: "YP Black")
+        
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(tableView)
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+        ])
     }
     
-    func updateTableViewAnimated() {
+    private func updateTableViewAnimated() {
         let oldCount = photos.count
         let newCount = imagesListService.photos.count
         photos = imagesListService.photos
@@ -109,6 +121,5 @@ extension ImagesListViewController: UITableViewDelegate {
     ) {
         guard indexPath.row + 1 == photos.count else { return }
         imagesListService.fetchPhotosNextPage()
-        
     }
 }
