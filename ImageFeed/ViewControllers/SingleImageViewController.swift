@@ -14,7 +14,6 @@ final class SingleImageViewController: UIViewController {
         didSet {
             guard isViewLoaded, let image else { return }
             setImage()
-
             imageView.frame.size = image.size
         }
     }
@@ -50,7 +49,7 @@ final class SingleImageViewController: UIViewController {
     
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = UIColor(named: "YP Black")
+        imageView.backgroundColor = .ypBlack
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
@@ -161,15 +160,15 @@ final class SingleImageViewController: UIViewController {
         else { return }
         
         imageView.kf.setImage(with: imageUrl) {[weak self] result in
-                guard let self else { return }
-                
-                switch result {
-                case .success(let result):
-                    self.rescaleImage(image: result.image)
-                case .failure(let error):
-                    print("Failed to set image: \(error)")
-                }
+            guard let self else { return }
+            
+            switch result {
+            case .success(let result):
+                self.rescaleImage(image: result.image)
+            case .failure(let error):
+                print("Failed to set image: \(error)")
             }
+        }
         imageView.kf.indicatorType = .activity
         
         UIBlockingProgressHUD.dismiss()

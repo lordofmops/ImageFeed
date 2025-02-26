@@ -25,8 +25,8 @@ final class ImagesListCell: UITableViewCell {
     private lazy var cellImage: UIImageView = {
         var imageView = UIImageView()
         
-        contentView.backgroundColor = UIColor(named: "YP Black")
-        imageView.backgroundColor = UIColor(named: "YP Black")
+        contentView.backgroundColor = .ypBlack
+        imageView.backgroundColor = .ypBlack
         
         imageView.layer.cornerRadius = 16
         imageView.layer.masksToBounds = true
@@ -39,7 +39,7 @@ final class ImagesListCell: UITableViewCell {
     private lazy var dateLabel: UILabel = {
         var label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        label.textColor = UIColor(named: "YP White")
+        label.textColor = .ypWhite
         return label
     }()
     
@@ -80,14 +80,6 @@ final class ImagesListCell: UITableViewCell {
         cellImage.kf.setImage(
             with: url,
             placeholder: placeholder)
-//        ) {[weak self] result in
-//            guard
-//                let self,
-//                let delegate = self.delegate
-//            else { return }
-//            
-//            delegate.tableView.reloadRows(at: [indexPath], with: .automatic)
-//        }
         
         if let createdAt = photo.createdAt {
             dateLabel.text = dateFormatter.string(from: createdAt)
@@ -145,13 +137,12 @@ final class ImagesListCell: UITableViewCell {
         
         let gradient = CAGradientLayer()
         gradient.colors = [UIColor.ypBlack.withAlphaComponent(0.0).cgColor, UIColor.ypBlack.withAlphaComponent(1.0).cgColor]
-//        gradient.colors = [UIColor.red, UIColor.blue]
         gradient.frame = gradientImageView.bounds
         gradient.opacity = 0.2
         
         gradientImageView.layer.sublayers?
-                                .filter { $0 is CAGradientLayer }
-                                .forEach { $0.removeFromSuperlayer() }
+            .filter { $0 is CAGradientLayer }
+            .forEach { $0.removeFromSuperlayer() }
         gradientImageView.layer.addSublayer(gradient)
         
         gradientImageView.translatesAutoresizingMaskIntoConstraints = false

@@ -24,20 +24,20 @@ final class WebViewViewController: UIViewController {
     
     private lazy var webView: WKWebView = {
         let webView = WKWebView()
-        webView.backgroundColor = UIColor(named: "YP White")
+        webView.backgroundColor = .ypWhite
         return webView
     }()
     
     private lazy var progressView: UIProgressView = {
         let progressView = UIProgressView()
-        progressView.progressTintColor = UIColor(named: "YP Black")
+        progressView.progressTintColor = .ypBlack
         return progressView
     }()
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(named: "YP White")
+        view.backgroundColor = .ypWhite
         setWebView()
         setProgressView()
         
@@ -45,11 +45,11 @@ final class WebViewViewController: UIViewController {
         
         estimatedProgressObservation = webView.observe(
             \.estimatedProgress,
-            options: [],
-            changeHandler: { [weak self] _, _ in
-                guard let self = self else { return }
-                self.updateProgress()
-            }
+             options: [],
+             changeHandler: { [weak self] _, _ in
+                 guard let self = self else { return }
+                 self.updateProgress()
+             }
         )
     }
     

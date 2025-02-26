@@ -19,7 +19,7 @@ final class ImagesListViewController: UIViewController, ImagesListCellDelegate {
     let tableView: UITableView = {
         let tableView = UITableView()
         
-        tableView.backgroundColor = UIColor(named: "YP Black")
+        tableView.backgroundColor = .ypBlack
         tableView.rowHeight = 200
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         tableView.separatorStyle = .none
@@ -36,22 +36,22 @@ final class ImagesListViewController: UIViewController, ImagesListCellDelegate {
         setupTableView()
         
         imagesListServiceObserver = NotificationCenter.default
-        .addObserver(
-            forName: ImagesListService.didChangeNotification,
-            object: nil,
-            queue: .main,
-            using: { [weak self] _ in
-                guard let self = self else { return }
-                self.updateTableViewAnimated()
-            }
-        )
+            .addObserver(
+                forName: ImagesListService.didChangeNotification,
+                object: nil,
+                queue: .main,
+                using: { [weak self] _ in
+                    guard let self = self else { return }
+                    self.updateTableViewAnimated()
+                }
+            )
         
         imagesListService.fetchPhotosNextPage()
     }
     
     // MARK: - Private functions
     private func setupTableView() {
-        view.backgroundColor = UIColor(named: "YP Black")
+        view.backgroundColor = .ypBlack
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)

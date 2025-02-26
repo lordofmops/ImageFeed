@@ -19,25 +19,25 @@ final class ProfileViewController: UIViewController {
     private lazy var profileDescriptionLabel : UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        label.textColor = UIColor(named: "YP White")
+        label.textColor = .ypWhite
         return label
     }()
     private lazy var nicknameLabel : UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        label.textColor = UIColor(named: "YP Gray")
+        label.textColor = .ypGray
         return label
     }()
     private lazy var nameLabel : UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 23, weight: .bold)
-        label.textColor = UIColor(named: "YP White")
+        label.textColor = .ypWhite
         return label
     }()
     private lazy var exitButton : UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "exit_button"), for: .normal)
-        button.tintColor = UIColor(named: "YP Red")
+        button.tintColor = .ypRed
         return button
     }()
     private lazy var profilePicture : UIImageView = {
@@ -50,7 +50,7 @@ final class ProfileViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         // UI setup
-        view.backgroundColor = UIColor(named: "YP Black")
+        view.backgroundColor = .ypBlack
         setProfilePicture()
         setExitButton()
         setNameLabel()

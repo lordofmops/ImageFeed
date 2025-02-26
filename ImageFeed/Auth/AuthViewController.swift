@@ -21,9 +21,9 @@ final class AuthViewController: UIViewController {
     private lazy var loginButton : UIButton = {
         let button = UIButton()
         button.setTitle("Войти", for: .normal)
-        button.setTitleColor(UIColor(named: "YP Black"), for: .normal)
+        button.setTitleColor(.ypBlack, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-        button.backgroundColor = UIColor(named: "YP White")
+        button.backgroundColor = .ypWhite
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
         
@@ -36,7 +36,7 @@ final class AuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(named: "YP Black")
+        view.backgroundColor = .ypBlack
         setLoginButton()
         setAuthLogo()
         setBackwardButton()
@@ -82,7 +82,7 @@ final class AuthViewController: UIViewController {
         navigationController?.navigationBar.backIndicatorImage = UIImage(named: "back_button_black")
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "back_button_black")
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black")
+        navigationItem.backBarButtonItem?.tintColor = .ypBlack
     }
     
     private func showAuthErrorAlert() {
@@ -109,7 +109,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
     }
     
     func webViewViewController(_ vc: WebViewViewController, didFailWithError error: Error) {
-            print("Authentication failed: \(error.localizedDescription)")
-            showAuthErrorAlert()
-        }
+        print("Authentication failed: \(error.localizedDescription)")
+        showAuthErrorAlert()
+    }
 }
