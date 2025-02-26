@@ -29,21 +29,21 @@ final class SingleImageViewController: UIViewController {
     
     private lazy var backButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "Backward Button"), for: .normal)
+        button.setImage(UIImage(named: "back_button_white"), for: .normal)
         button.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         return button
     }()
     
     private lazy var exportButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "Export button"), for: .normal)
+        button.setImage(UIImage(named: "export_button"), for: .normal)
         button.addTarget(self, action: #selector(didTapExportButton), for: .touchUpInside)
         return button
     }()
     
     private lazy var likeButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "Favorites button (inactive)"), for: .normal)
+        button.setImage(UIImage(named: "favorites_button_inactive"), for: .normal)
         button.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         return button
     }()

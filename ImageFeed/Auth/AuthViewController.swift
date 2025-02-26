@@ -14,7 +14,7 @@ final class AuthViewController: UIViewController {
     weak var delegate: AuthViewControllerDelegate?
     
     private lazy var authLogo : UIImageView = {
-        let logo = UIImageView(image: UIImage(named: "Unsplash logo"))
+        let logo = UIImageView(image: UIImage(named: "unsplash_logo"))
         return logo
     }()
     
@@ -79,8 +79,8 @@ final class AuthViewController: UIViewController {
     }
     
     private func setBackwardButton() {
-        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "Backward button (black)")
-        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "Backward button (black)")
+        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "back_button_black")
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "back_button_black")
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black")
     }

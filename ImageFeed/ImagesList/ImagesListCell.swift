@@ -18,7 +18,7 @@ final class ImagesListCell: UITableViewCell {
     
     private lazy var likeButton: UIButton = {
         var button = UIButton()
-        button.setImage(UIImage(named: "Like button (inactive)"), for: .normal)
+        button.setImage(UIImage(named: "like_button_inactive"), for: .normal)
         return button
     }()
     
@@ -94,8 +94,8 @@ final class ImagesListCell: UITableViewCell {
         }
         
         let likeButtonImage = photo.isLiked
-                                ? UIImage(named: "Like button (active)")
-                                : UIImage(named: "Like button (inactive)")
+                                ? UIImage(named: "like_button_active")
+                                : UIImage(named: "like_button_inactive")
         likeButton.setImage(likeButtonImage, for: .normal)
         likeButton.setTitle("", for: .normal)
         

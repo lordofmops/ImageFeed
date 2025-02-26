@@ -36,13 +36,13 @@ final class ProfileViewController: UIViewController {
     }()
     private lazy var exitButton : UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "Exit button"), for: .normal)
+        button.setImage(UIImage(named: "exit_button"), for: .normal)
         button.tintColor = UIColor(named: "YP Red")
         return button
     }()
     private lazy var profilePicture : UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "Profile picture")
+        imageView.image = UIImage(named: "profile_picture")
         imageView.tintColor = .gray
         return imageView
     }()
@@ -152,7 +152,7 @@ final class ProfileViewController: UIViewController {
             let url = URL(string: profileImageURL)
         else { return }
         
-        let placeholder = UIImage(named: "Backward button")
+        let placeholder = UIImage(named: "profile_picture")
         let processor = RoundCornerImageProcessor(cornerRadius: 61)
         
         profilePicture.kf.indicatorType = .activity

@@ -15,7 +15,7 @@ final class SplashViewController: UIViewController {
     private let oauth2Storage = OAuth2TokenStorage()
     
     private lazy var logo : UIImageView = {
-        let logo = UIImageView(image: UIImage(named: "Vector"))
+        let logo = UIImageView(image: UIImage(named: "vector"))
         return logo
     }()
     
