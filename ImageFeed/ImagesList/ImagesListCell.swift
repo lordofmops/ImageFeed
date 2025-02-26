@@ -110,8 +110,8 @@ final class ImagesListCell: UITableViewCell {
             likeButton.heightAnchor.constraint(equalToConstant: 42),
             likeButton.widthAnchor.constraint(equalToConstant: 42),
             
-            likeButton.topAnchor.constraint(equalTo: contentView.topAnchor),
-            likeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+            likeButton.topAnchor.constraint(equalTo: cellImage.topAnchor),
+            likeButton.trailingAnchor.constraint(equalTo: cellImage.trailingAnchor)
         ])
     }
     
