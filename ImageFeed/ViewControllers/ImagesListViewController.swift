@@ -33,7 +33,6 @@ final class ImagesListViewController: UIViewController, ImagesListCellDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         setupTableView()
         
         imagesListServiceObserver = NotificationCenter.default
@@ -108,7 +107,13 @@ extension ImagesListViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
+        let photo = photos[indexPath.row]
+        
+        let singleImageScreen = SingleImageViewController()
+        singleImageScreen.image = photo
+        singleImageScreen.modalPresentationStyle = .fullScreen
+        
+        present(singleImageScreen, animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

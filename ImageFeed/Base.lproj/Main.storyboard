@@ -59,96 +59,6 @@
             </objects>
             <point key="canvasLocation" x="-373.28244274809157" y="-237.32394366197184"/>
         </scene>
-        <!--Single Image View Controller-->
-        <scene sceneID="h2z-Uh-dyy">
-            <objects>
-                <viewController modalPresentationStyle="fullScreen" id="ZhL-DB-Y2Z" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="URN-r2-aa9">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uCP-8I-LHo">
-                                <rect key="frame" x="0.0" y="0.0" width="433" height="892"/>
-                                <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="19" translatesAutoresizingMaskIntoConstraints="NO" id="0qu-t0-GYx">
-                                        <rect key="frame" x="0.0" y="0.0" width="391" height="853"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    </imageView>
-                                </subviews>
-                                <viewLayoutGuide key="contentLayoutGuide" id="Pb2-MV-Cag"/>
-                                <viewLayoutGuide key="frameLayoutGuide" id="0Ts-kH-x5G"/>
-                                <connections>
-                                    <outlet property="delegate" destination="ZhL-DB-Y2Z" id="g7b-Cq-KcG"/>
-                                </connections>
-                            </scrollView>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="137" translatesAutoresizingMaskIntoConstraints="NO" id="c5Z-vY-eBD">
-                                <rect key="frame" x="77" y="751" width="239" height="51"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ssi-WA-QvM" userLabel="Like button">
-                                        <rect key="frame" x="0.0" y="0.0" width="51" height="51"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="Ssi-WA-QvM" secondAttribute="height" multiplier="1:1" id="Fxp-Zu-jBs"/>
-                                            <constraint firstAttribute="height" constant="51" id="U6F-8z-ASK"/>
-                                        </constraints>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="Favorites button (inactive)"/>
-                                        <connections>
-                                            <action selector="didTapLikeButton:" destination="ZhL-DB-Y2Z" eventType="touchUpInside" id="ZTK-Hk-Ibn"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HEk-hU-ROU" userLabel="Export button">
-                                        <rect key="frame" x="188" y="0.0" width="51" height="51"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="51" id="g7u-If-pcM"/>
-                                            <constraint firstAttribute="width" secondItem="HEk-hU-ROU" secondAttribute="height" multiplier="1:1" id="ma2-0c-eqc"/>
-                                        </constraints>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="Export button"/>
-                                        <connections>
-                                            <action selector="didTapExportButton:" destination="ZhL-DB-Y2Z" eventType="touchUpInside" id="TVv-Jw-Umg"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K93-17-7Jr" userLabel="Backward button">
-                                <rect key="frame" x="25" y="70" width="44" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="44" id="EgQ-3B-T88"/>
-                                    <constraint firstAttribute="width" secondItem="K93-17-7Jr" secondAttribute="height" multiplier="1:1" id="OZe-Lg-IhM"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="Backward Button"/>
-                                <connections>
-                                    <action selector="didTapBackwardButton:" destination="ZhL-DB-Y2Z" eventType="touchUpInside" id="jXw-Hf-IpB"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="0Xs-NL-GQo"/>
-                        <color key="backgroundColor" name="YP Black"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="uCP-8I-LHo" secondAttribute="trailing" id="3lO-p5-bw6"/>
-                            <constraint firstItem="K93-17-7Jr" firstAttribute="leading" secondItem="URN-r2-aa9" secondAttribute="leadingMargin" constant="9" id="6r2-WV-SzR"/>
-                            <constraint firstItem="uCP-8I-LHo" firstAttribute="top" secondItem="URN-r2-aa9" secondAttribute="top" id="ITi-qB-sEf"/>
-                            <constraint firstItem="K93-17-7Jr" firstAttribute="top" secondItem="0Xs-NL-GQo" secondAttribute="top" constant="11" id="lG0-gG-Za8"/>
-                            <constraint firstItem="0Xs-NL-GQo" firstAttribute="bottom" secondItem="c5Z-vY-eBD" secondAttribute="bottom" constant="16" id="myO-Vw-5mh"/>
-                            <constraint firstAttribute="bottom" secondItem="uCP-8I-LHo" secondAttribute="bottom" id="p9i-uv-f6N"/>
-                            <constraint firstItem="c5Z-vY-eBD" firstAttribute="centerX" secondItem="URN-r2-aa9" secondAttribute="centerX" id="wlB-Sc-cYJ"/>
-                            <constraint firstItem="uCP-8I-LHo" firstAttribute="leading" secondItem="URN-r2-aa9" secondAttribute="leading" id="y2E-F7-Tdd"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="oNe-VG-y5m"/>
-                    <connections>
-                        <outlet property="addToFavoritesButton" destination="Ssi-WA-QvM" id="KT2-H6-aUT"/>
-                        <outlet property="backwardButton" destination="K93-17-7Jr" id="AaX-3t-2YN"/>
-                        <outlet property="exportButton" destination="HEk-hU-ROU" id="ZH5-sV-AAZ"/>
-                        <outlet property="imageView" destination="0qu-t0-GYx" id="aXx-lQ-4S0"/>
-                        <outlet property="scrollView" destination="uCP-8I-LHo" id="uuA-Bu-RE7"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Mrg-Ex-ZmY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1313.7404580152672" y="-589.43661971830988"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="0ss-2v-jty">
             <objects>
@@ -169,10 +79,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="19" width="1280" height="853"/>
-        <image name="Backward Button" width="24" height="24"/>
-        <image name="Export button" width="51" height="51"/>
-        <image name="Favorites button (inactive)" width="51" height="51"/>
         <namedColor name="YP Black">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
