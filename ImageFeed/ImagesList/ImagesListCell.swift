@@ -91,7 +91,7 @@ final class ImagesListCell: UITableViewCell {
         likeButton.setImage(likeButtonImage, for: .normal)
         likeButton.setTitle("", for: .normal)
         
-        setupGradient()
+//        setupGradient()
     }
     
     private func setupLikeButton() {
