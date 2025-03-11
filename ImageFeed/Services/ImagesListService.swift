@@ -64,6 +64,56 @@ final class ImagesListService {
         task.resume()
     }
     
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let url = URL(string: "https://api.unsplash.com/photos/\(photoId)/like") else {
+            print("Failed to create URL")
+            return
+        }
+
+        guard let token = OAuth2TokenStorage().token else {
+            print("No auth token found")
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.httpMethod = isLike ? "POST" : "DELETE"
+        
+        let task = URLSession.shared.dataTask(with: request) {[weak self] data, response, error in
+            guard let self else { return }
+            
+            if let error {
+                print("Failed to change like: \(error)")
+                completion(.failure(error))
+                return
+            }
+            
+            guard let indexPhoto = self.photos.firstIndex(where: {$0.id == photoId}) else {
+                print("Failed to find photo in array")
+                return
+            }
+            
+            let photo = self.photos[indexPhoto]
+            
+            DispatchQueue.main.async {
+                self.photos[indexPhoto] = Photo(
+                    id: photo.id,
+                    size: photo.size,
+                    createdAt: photo.createdAt,
+                    welcomeDescription: photo.welcomeDescription,
+                    regularImageURL: photo.regularImageURL,
+                    largeImageURL: photo.largeImageURL,
+                    isLiked: !photo.isLiked
+                )
+                
+                print("Like on photo \(photoId) changed on: \(self.photos[indexPhoto].isLiked)")
+                
+                completion(.success(()))
+            }
+        }
+        task.resume()
+    }
+    
     private func makeImagesListRequest(page: Int) -> URLRequest? {
         guard let url = URL(string: "https://api.unsplash.com/photos?page=\(page)") else {
             print("Failed to create URL")

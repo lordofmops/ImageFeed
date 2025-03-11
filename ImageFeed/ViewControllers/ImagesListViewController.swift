@@ -12,7 +12,6 @@ final class ImagesListViewController: UIViewController, ImagesListCellDelegate {
     // MARK: - Private variables
     private let imagesListService = ImagesListService.shared
     private var photos: [Photo] = []
-    private let showSingleImageSegueIdentifier = "ShowSingleImage"
     private var imagesListServiceObserver: NSObjectProtocol?
     
     // MARK: - UI elements
@@ -47,6 +46,36 @@ final class ImagesListViewController: UIViewController, ImagesListCellDelegate {
             )
         
         imagesListService.fetchPhotosNextPage()
+    }
+    
+    // MARK: - ImagesListCellDelegate
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        print("indexPath: \(indexPath.row)")
+        let photo = photos[indexPath.row]
+        
+        UIBlockingProgressHUD.show()
+        imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) {[weak self] result in
+            guard let self else { return }
+            
+            DispatchQueue.main.async {
+                switch result {
+                case .success():
+                    self.photos[indexPath.row] = self.imagesListService.photos[indexPath.row]
+                    
+                    if let updatedCell = self.tableView.cellForRow(at: indexPath) as? ImagesListCell {
+                        updatedCell.setLike(isLiked: !(self.photos[indexPath.row].isLiked))
+                    }
+                    self.tableView.reloadRows(at: [indexPath], with: .none)
+                    
+                    UIBlockingProgressHUD.dismiss()
+                    
+                case .failure(let error):
+                    print("Error changing like: \(error)")
+                    UIBlockingProgressHUD.dismiss()
+                }
+            }
+        }
     }
     
     // MARK: - Private functions

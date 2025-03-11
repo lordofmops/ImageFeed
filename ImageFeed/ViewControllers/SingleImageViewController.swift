@@ -182,7 +182,6 @@ final class SingleImageViewController: UIViewController {
         let vScale = visibleRectSize.height / imageSize.height
         
         let minScale = min(hScale, vScale)
-        print(minScale, scrollView.minimumZoomScale)
 
         scrollView.minimumZoomScale = min(minScale, scrollView.minimumZoomScale)
         scrollView.zoomScale = minScale

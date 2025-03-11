@@ -9,7 +9,7 @@ import UIKit
 import Kingfisher
 
 protocol ImagesListCellDelegate: AnyObject {
-    var tableView: UITableView { get }
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
 }
 
 final class ImagesListCell: UITableViewCell {
@@ -19,6 +19,7 @@ final class ImagesListCell: UITableViewCell {
     private lazy var likeButton: UIButton = {
         var button = UIButton()
         button.setImage(UIImage(named: "like_button_inactive"), for: .normal)
+        button.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         return button
     }()
     
@@ -89,9 +90,20 @@ final class ImagesListCell: UITableViewCell {
                                 ? UIImage(named: "like_button_active")
                                 : UIImage(named: "like_button_inactive")
         likeButton.setImage(likeButtonImage, for: .normal)
-        likeButton.setTitle("", for: .normal)
         
 //        setupGradient()
+    }
+    
+    func setLike(isLiked: Bool) {
+        let likeButtonImage = isLiked
+                                ? UIImage(named: "like_button_active")
+                                : UIImage(named: "like_button_inactive")
+        likeButton.setImage(likeButtonImage, for: .normal)
+    }
+    
+    @objc
+    private func didTapLikeButton() {
+        delegate?.imageListCellDidTapLike(self)
     }
     
     private func setupLikeButton() {
