@@ -10,6 +10,7 @@ final class ImagesListService {
     static let shared = ImagesListService()
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private var task: URLSessionTask?
     private var lastLoadedPage: Int?
     private(set) var photos: [Photo] = []
@@ -17,6 +18,13 @@ final class ImagesListService {
     private var loadedPhotoIDs = Set<String>()
     
     private init() {}
+    
+    func deletePhotos() {
+        photos.removeAll()
+        task = nil
+        lastLoadedPage = nil
+        loadedPhotoIDs.removeAll()
+    }
     
     func fetchPhotosNextPage() {
         assert(Thread.isMainThread)
@@ -70,7 +78,7 @@ final class ImagesListService {
             return
         }
 
-        guard let token = OAuth2TokenStorage().token else {
+        guard let token = oauth2TokenStorage.token else {
             print("No auth token found")
             return
         }
@@ -120,7 +128,7 @@ final class ImagesListService {
             return nil
         }
 
-        guard let token = OAuth2TokenStorage().token else {
+        guard let token = oauth2TokenStorage.token else {
             print("No auth token found")
             return nil
         }

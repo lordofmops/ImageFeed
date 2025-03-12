@@ -13,6 +13,7 @@ final class ProfileViewController: UIViewController {
     // MARK: - Private variables
     private var profile: Profile?
     private let profileService = ProfileService.shared
+    private let profileLogoutService = ProfileLogoutService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
     
     private lazy var profileDescriptionLabel : UILabel = {
@@ -36,6 +37,7 @@ final class ProfileViewController: UIViewController {
     private lazy var exitButton : UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "exit_button"), for: .normal)
+        button.addTarget(self, action: #selector(didTapExitButton), for: .touchUpInside)
         button.tintColor = .ypRed
         return button
     }()
@@ -74,7 +76,19 @@ final class ProfileViewController: UIViewController {
         updateImage()
     }
     
-    // MARK: - Private functions
+    // MARK: - Button action
+    @objc
+    private func didTapExitButton() {
+        profileLogoutService.logout()
+        guard let window = UIApplication.shared.windows.first else {
+            print("[ProfileViewController/didTapExitButton]: Unable to get window")
+            return
+        }
+        window.rootViewController = SplashViewController()
+        window.makeKeyAndVisible()
+    }
+    
+    // MARK: - UI setup
     private func setProfilePicture(){
         profilePicture.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(profilePicture)

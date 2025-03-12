@@ -15,6 +15,12 @@ final class ProfileService {
     
     private init() {}
     
+    func deleteProfile() {
+        profile = nil
+        task = nil
+        lastToken = nil
+    }
+    
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread)
         guard lastToken != token else {
@@ -56,7 +62,7 @@ final class ProfileService {
         task.resume()
     }
     
-    func makeProfileRequest(token: String) -> URLRequest? {
+    private func makeProfileRequest(token: String) -> URLRequest? {
         guard let url = URL(string: "https://api.unsplash.com/me") else {
             print( "Failed to create URL")
             return nil

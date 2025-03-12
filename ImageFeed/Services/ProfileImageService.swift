@@ -17,6 +17,12 @@ final class ProfileImageService {
     
     private init() {}
     
+    func deleteProfileImage() {
+        imageURL = nil
+        task = nil
+        lastUsername = nil
+    }
+    
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         guard lastUsername != username else {
