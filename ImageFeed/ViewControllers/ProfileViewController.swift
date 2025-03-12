@@ -79,13 +79,28 @@ final class ProfileViewController: UIViewController {
     // MARK: - Button action
     @objc
     private func didTapExitButton() {
-        profileLogoutService.logout()
-        guard let window = UIApplication.shared.windows.first else {
-            print("[ProfileViewController/didTapExitButton]: Unable to get window")
-            return
+        let alert = UIAlertController(
+            title: "Пока-пока!",
+            message: "Уверены, что хотите выйти?",
+            preferredStyle: .alert
+        )
+        
+        let retryAction = UIAlertAction(title: "Да", style: .default){ [weak self] _ in
+            guard let self else { return }
+            self.profileLogoutService.logout()
+            guard let window = UIApplication.shared.windows.first else {
+                print("[ProfileViewController/didTapExitButton]: Unable to get window")
+                return
+            }
+            window.rootViewController = SplashViewController()
+            window.makeKeyAndVisible()
         }
-        window.rootViewController = SplashViewController()
-        window.makeKeyAndVisible()
+        let cancelAction = UIAlertAction(title: "Нет", style: .default)
+        
+        alert.addAction(retryAction)
+        alert.addAction(cancelAction)
+
+        present(alert, animated: true)
     }
     
     // MARK: - UI setup
