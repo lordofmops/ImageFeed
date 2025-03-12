@@ -18,6 +18,8 @@ final class SingleImageViewController: UIViewController {
         }
     }
     
+    private let imagesListService = ImagesListService.shared
+    
     // MARK: - Outlets
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -58,17 +60,26 @@ final class SingleImageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        scrollView.delegate = self
-        
-        view.layoutIfNeeded()
-        setImage()
+//        scrollView.delegate = self
+//        
+//        view.layoutIfNeeded()
+//        setImage()
         
         setupScrollView()
         setupImageView()
         setupBackButton()
         setupLikeButton()
         setupExportButton()
+        setLike()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
+        scrollView.delegate = self
+        
+        view.layoutIfNeeded()
+        setImage()
     }
 
     // MARK: - Buttons actions
@@ -82,6 +93,34 @@ final class SingleImageViewController: UIViewController {
     
     @objc
     private func didTapLikeButton(_ sender: Any) {
+        guard let image else { return }
+        let currentLike = !image.isLiked
+        
+        UIBlockingProgressHUD.show()
+        imagesListService.changeLike(photoId: image.id, isLike: currentLike) {[weak self] result in
+            guard let self else { return }
+            
+            DispatchQueue.main.async {
+                switch result {
+                case .success():
+                    self.image = self.imagesListService.photos.filter { $0.id == image.id }.first
+                    
+                    self.setLike()
+                    
+                    UIBlockingProgressHUD.dismiss()
+                    
+                case .failure(let error):
+                    print("Error changing like: \(error)")
+                    UIBlockingProgressHUD.dismiss()
+                }
+            }
+        }
+        
+        NotificationCenter.default.post(
+            name: NSNotification.Name("LikeStatusChanged"),
+            object: nil,
+            userInfo: ["photoId": image.id, "isLiked": currentLike]
+        )
     }
     
     @objc
@@ -168,9 +207,18 @@ final class SingleImageViewController: UIViewController {
                 self.rescaleImage(image: result.image)
             case .failure(let error):
                 print("Failed to set image: \(error)")
+                self.showError()
             }
         }
         imageView.kf.indicatorType = .activity
+    }
+    
+    private func setLike() {
+        guard let image else { return }
+        let buttonImage = image.isLiked
+                            ? UIImage(named: "favorites_button_active")
+                            : UIImage(named: "favorites_button_inactive")
+        likeButton.setImage(buttonImage, for: .normal)
     }
     
     private func rescaleImage(image: UIImage) {
@@ -201,6 +249,23 @@ final class SingleImageViewController: UIViewController {
         scrollView.contentInset = UIEdgeInsets(top: y, left: x, bottom: y, right: x)
         
         UIBlockingProgressHUD.dismiss()
+    }
+    
+    private func showError() {
+        let alert = UIAlertController(
+            title: "Ошибка",
+            message: "Что-то пошло не так. Попробовать ещё раз?",
+            preferredStyle: .alert
+        )
+        let cancelAction = UIAlertAction(title: "Не надо", style: .default)
+        let retryAction = UIAlertAction(title: "Повторить", style: .default){ [weak self] _ in
+            guard let self else { return }
+            self.setImage()
+        }
+        alert.addAction(cancelAction)
+        alert.addAction(retryAction)
+
+        present(alert, animated: true)
     }
 }
 

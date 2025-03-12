@@ -13,6 +13,8 @@ final class ImagesListViewController: UIViewController, ImagesListCellDelegate {
     private let imagesListService = ImagesListService.shared
     private var photos: [Photo] = []
     private var imagesListServiceObserver: NSObjectProtocol?
+    private var likeStatusObserver: NSObjectProtocol?
+
     
     // MARK: - UI elements
     let tableView: UITableView = {
@@ -44,6 +46,31 @@ final class ImagesListViewController: UIViewController, ImagesListCellDelegate {
                     self.updateTableViewAnimated()
                 }
             )
+        
+        likeStatusObserver = NotificationCenter.default
+            .addObserver(
+                forName: NSNotification.Name("LikeStatusChanged"),
+                object: nil,
+                queue: .main,
+                using: {[weak self] notification in
+                    guard let self,
+                          let userInfo = notification.userInfo,
+                          let photoId = userInfo["photoId"] as? String,
+                          let isLiked = userInfo["isLiked"] as? Bool else { return }
+
+                    if let index = photos.firstIndex(where: { $0.id == photoId }) {
+                        photos[index] = Photo(id: photos[index].id,
+                                              size: photos[index].size,
+                                              createdAt: photos[index].createdAt,
+                                              welcomeDescription: photos[index].welcomeDescription,
+                                              regularImageURL: photos[index].regularImageURL,
+                                              largeImageURL: photos[index].largeImageURL,
+                                              isLiked: isLiked)
+                        
+                        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
+                    }
+                }
+        )
         
         imagesListService.fetchPhotosNextPage()
     }
