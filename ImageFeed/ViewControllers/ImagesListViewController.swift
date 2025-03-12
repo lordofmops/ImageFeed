@@ -78,7 +78,7 @@ final class ImagesListViewController: UIViewController, ImagesListCellDelegate {
     // MARK: - ImagesListCellDelegate
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
-        print("indexPath: \(indexPath.row)")
+        print("[INFO] User did tap like on image with indexPath \(indexPath.row)")
         let photo = photos[indexPath.row]
         
         UIBlockingProgressHUD.show()
@@ -98,7 +98,7 @@ final class ImagesListViewController: UIViewController, ImagesListCellDelegate {
                     UIBlockingProgressHUD.dismiss()
                     
                 case .failure(let error):
-                    print("Error changing like: \(error)")
+                    print("[ERROR] [ImagesListViewController/imageListCellDidTapLike]: Error changing like status: \(error)")
                     UIBlockingProgressHUD.dismiss()
                 }
             }

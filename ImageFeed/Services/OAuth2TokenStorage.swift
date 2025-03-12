@@ -20,14 +20,14 @@ final class OAuth2TokenStorage {
             if let newValue {
                 print(
                     KeychainWrapper.standard.set(newValue, forKey: "Auth token")
-                    ? "Auth token successfully saved"
-                    : "Failed to save auth token"
+                    ? "[INFO] Auth token successfully saved"
+                    : "[ERROR] [OAuth2TokenStorage/token]: Failed to save auth token"
                 )
             } else {
                 print(
                     KeychainWrapper.standard.removeObject(forKey: "Auth token")
-                    ? "Auth token successfully removed"
-                    : "Failed to remove auth token"
+                    ? "[INFO] Auth token successfully removed"
+                    : "[ERROR] [OAuth2TokenStorage/token]: Failed to remove auth token"
                 )
             }
         }

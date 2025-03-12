@@ -89,7 +89,7 @@ final class ProfileViewController: UIViewController {
             guard let self else { return }
             self.profileLogoutService.logout()
             guard let window = UIApplication.shared.windows.first else {
-                print("[ProfileViewController/didTapExitButton]: Unable to get window")
+                print("[ERROR] [ProfileViewController/didTapExitButton]: Unable to get window")
                 return
             }
             window.rootViewController = SplashViewController()

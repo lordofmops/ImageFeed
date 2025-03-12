@@ -26,7 +26,7 @@ final class ProfileImageService {
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         guard lastUsername != username else {
-            print("Profile image request already in progress for the same username")
+            print("[ERROR] [ProfileImageService/fetchProfileImageURL]: Profile image request already in progress for the same username")
             completion(.failure(NetworkServiceError.invalidRequest))
             return
         }
@@ -35,7 +35,7 @@ final class ProfileImageService {
         lastUsername = username
         
         guard let request = makeProfileImageRequest(username: username) else {
-            print("Failed to make profile image request")
+            print("[ERROR] [ProfileImageService/fetchProfileImageURL]: Failed to make profile image request")
             completion(.failure(NetworkServiceError.invalidRequest))
             return
         }
@@ -47,10 +47,13 @@ final class ProfileImageService {
                 switch result {
                 case .success(let response):
                     guard let image = response.profileImage.large else {
-                        preconditionFailure("Failed to fetch profile image URL")
+                        print("[ERROR] [ProfileImageService/fetchProfileImageURL]: Failed to fetch profile image URL")
+                        return
                     }
                     self.imageURL = image
                     completion(.success(image))
+                    print("[INFO] Profile image loaded")
+                    
                     NotificationCenter.default
                         .post(
                             name: ProfileImageService.didChangeNotification,
@@ -58,7 +61,7 @@ final class ProfileImageService {
                             userInfo: ["URL": image]
                         )
                 case .failure(let error):
-                    print("Network request failed: \(error)")
+                    print("[ERROR] [ProfileImageService/fetchProfileImageURL]: Network request failed: \(error)")
                     completion(.failure(error))
                 }
                 
@@ -73,12 +76,12 @@ final class ProfileImageService {
 
     private func makeProfileImageRequest(username: String) -> URLRequest? {
         guard let url = URL(string: "https://api.unsplash.com/users/\(username)") else {
-            print("Failed to create URL")
+            print("[ERROR] [ProfileImageService/makeProfileImageRequest]: Failed to create URL")
             return nil
         }
 
         guard let token = oauth2TokenStorage.token else {
-            print("No auth token found")
+            print("[ERROR] [ProfileImageService/makeProfileImageRequest]: No auth token found")
             return nil
         }
 

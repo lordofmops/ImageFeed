@@ -83,7 +83,7 @@ final class SplashViewController: UIViewController {
     
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else {
-            assertionFailure("Invalid window configuration")
+            assertionFailure("[ERROR] [SplashViewController/switchToTabBarController]: Invalid window configuration")
             return
         }
         
@@ -110,19 +110,18 @@ extension SplashViewController: AuthViewControllerDelegate {
             
             switch result {
             case .success(let token):
-                print("Auth token: \(token)")
                 self.fetchProfile {
                     UIBlockingProgressHUD.dismiss()
                 }
             case .failure(let error):
-                print("Fetching auth token error: \(error)")
+                print("[ERROR] [SplashViewController/fetchOAuthToken]: Fetching auth token error: \(error)")
             }
         }
     }
     
     private func fetchProfile(completion: @escaping () -> Void) {
         guard let token = oauth2TokenStorage.token else {
-            print("No token found")
+            print("[ERROR] [SplashViewController/fetchProfile]: No token found")
             return
         }
         
@@ -131,13 +130,13 @@ extension SplashViewController: AuthViewControllerDelegate {
             
             switch result {
             case .success(let profile):
-                print("Username: \(profile.loginName)")
+                print("[INFO] User successfully fetched. Username: \(profile.loginName)")
                 
                 fetchProfileImage(for: profile.username)
                 
                 self.switchToTabBarController()
             case .failure(let error):
-                print("Failed to fetch profile: \(error)")
+                print("[ERROR] [SplashViewController/fetchProfile]: Failed to fetch profile: \(error)")
             }
             completion()
         }
@@ -147,9 +146,8 @@ extension SplashViewController: AuthViewControllerDelegate {
         profileImageService.fetchProfileImageURL(username: username) { result in
             switch result {
             case .success(let imageURL):
-                print("Avatar URL: \(imageURL)")
             case .failure(let error):
-                print("Failed to fetch avatar URL: \(error)")
+                print("[ERROR] [SplashViewController/fetchProfileImage]: Failed to fetch avatar URL: \(error)")
             }
         }
     }

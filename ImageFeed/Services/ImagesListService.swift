@@ -30,14 +30,14 @@ final class ImagesListService {
         assert(Thread.isMainThread)
         
         if task != nil {
-            print("Images list request already in progress")
+            print("[ERROR] [ImagesListService/fetchPhotosNextPage]: Images list request already in progress")
             return
         }
         
         let nextPage = (lastLoadedPage ?? 0) + 1
         
         guard let request = makeImagesListRequest(page: nextPage) else {
-            print("Failed to make images list request")
+            print("[ERROR] [ImagesListService/fetchPhotosNextPage]: Failed to make images list request")
             return
         }
         
@@ -55,7 +55,7 @@ final class ImagesListService {
                 self.loadedPhotoIDs.formUnion(newPhotos.map{ $0.id })
                 
                 self.lastLoadedPage = nextPage
-                print("Page \(nextPage) loaded")
+                print("[INFO] Page \(nextPage) loaded")
                 
                 NotificationCenter.default
                     .post(
@@ -63,7 +63,7 @@ final class ImagesListService {
                         object: self
                     )
             case .failure(let error):
-                print("Network request failed: \(error)")
+                print("[ERROR] [ImagesListService/fetchPhotosNextPage]: Network request failed: \(error)")
             }
             self.task = nil
         }
@@ -74,12 +74,12 @@ final class ImagesListService {
     
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
         guard let url = URL(string: "https://api.unsplash.com/photos/\(photoId)/like") else {
-            print("Failed to create URL")
+            print("[ERROR] [ImagesListService/changeLike]: Failed to create URL")
             return
         }
 
         guard let token = oauth2TokenStorage.token else {
-            print("No auth token found")
+            print("[ERROR] [ImagesListService/changeLike]: No auth token found")
             return
         }
 
@@ -91,13 +91,13 @@ final class ImagesListService {
             guard let self else { return }
             
             if let error {
-                print("Failed to change like: \(error)")
+                print("[ERROR] [ImagesListService/changeLike]: Failed to change like: \(error)")
                 completion(.failure(error))
                 return
             }
             
             guard let indexPhoto = self.photos.firstIndex(where: {$0.id == photoId}) else {
-                print("Failed to find photo in array")
+                print("[ERROR] [ImagesListService/changeLike]: Failed to find photo in array")
                 return
             }
             
@@ -114,7 +114,7 @@ final class ImagesListService {
                     isLiked: !photo.isLiked
                 )
                 
-                print("Like on photo \(photoId) changed on: \(self.photos[indexPhoto].isLiked)")
+                print("[INFO] Like on photo \(photoId) changed on \(self.photos[indexPhoto].isLiked)")
                 
                 completion(.success(()))
             }
@@ -124,12 +124,12 @@ final class ImagesListService {
     
     private func makeImagesListRequest(page: Int) -> URLRequest? {
         guard let url = URL(string: "https://api.unsplash.com/photos?page=\(page)") else {
-            print("Failed to create URL")
+            print("[ERROR] [ImagesListService/makeImagesListRequest]: Failed to create URL")
             return nil
         }
 
         guard let token = oauth2TokenStorage.token else {
-            print("No auth token found")
+            print("[ERROR] [ImagesListService/makeImagesListRequest]: No auth token found")
             return nil
         }
 

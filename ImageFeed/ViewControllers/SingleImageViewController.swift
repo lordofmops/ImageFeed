@@ -60,11 +60,6 @@ final class SingleImageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        scrollView.delegate = self
-//        
-//        view.layoutIfNeeded()
-//        setImage()
-        
         setupScrollView()
         setupImageView()
         setupBackButton()
@@ -110,7 +105,7 @@ final class SingleImageViewController: UIViewController {
                     UIBlockingProgressHUD.dismiss()
                     
                 case .failure(let error):
-                    print("Error changing like: \(error)")
+                    print("[ERROR] [SingleImageViewController/didTapLikeButton]: Error changing like: \(error)")
                     UIBlockingProgressHUD.dismiss()
                 }
             }
@@ -206,7 +201,7 @@ final class SingleImageViewController: UIViewController {
             case .success(let result):
                 self.rescaleImage(image: result.image)
             case .failure(let error):
-                print("Failed to set image: \(error)")
+                print("[ERROR] [SingleImageViewController/setImage]: Failed to set image: \(error)")
                 self.showError()
             }
         }

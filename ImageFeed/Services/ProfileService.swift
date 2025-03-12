@@ -24,7 +24,7 @@ final class ProfileService {
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread)
         guard lastToken != token else {
-            print("Profile request already in progress with the same token")
+            print("[ERROR] [ProfileService/fetchProfile]: Profile request already in progress with the same token")
             completion(.failure(NetworkServiceError.invalidRequest))
             return
         }
@@ -35,7 +35,7 @@ final class ProfileService {
         guard
             let request = makeProfileRequest(token: token)
         else {
-            print("Failed to make profile request")
+            print("[ERROR] [ProfileService/fetchProfile]: Failed to make profile request")
             completion(.failure(NetworkServiceError.invalidRequest))
             return
         }
@@ -49,8 +49,9 @@ final class ProfileService {
                     let profile = Profile(from: response)
                     self.profile = profile
                     completion(.success(profile))
+                    print("[INFO] Profile data loaded")
                 case .failure(let error):
-                    print("Network request failed: \(error)")
+                    print("[ERROR] [ProfileService/fetchProfile]: Network request failed: \(error)")
                     completion(.failure(error))
                 }
                 
@@ -64,7 +65,7 @@ final class ProfileService {
     
     private func makeProfileRequest(token: String) -> URLRequest? {
         guard let url = URL(string: "https://api.unsplash.com/me") else {
-            print( "Failed to create URL")
+            print( "[ERROR] [ProfileService/makeProfileRequest]: Failed to create URL")
             return nil
         }
         

@@ -19,7 +19,7 @@ final class ProfileLogoutService {
        profileImageService.deleteProfileImage()
        imagesListService.deletePhotos()
        
-       print("User has been logged out successfully")
+       print("[INFO] User has been logged out successfully")
    }
 
    private func cleanCookies() {

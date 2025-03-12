@@ -104,12 +104,12 @@ extension AuthViewController: WebViewViewControllerDelegate {
     }
 
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
-        print("User cancelled authentication")
+        print("[INFO] User cancelled authentication")
         navigationController?.popViewController(animated: true)
     }
     
     func webViewViewController(_ vc: WebViewViewController, didFailWithError error: Error) {
-        print("Authentication failed: \(error.localizedDescription)")
+        print("[ERROR] [AuthViewController/webViewViewController(didFailWithError:)]: Authentication failed: \(error.localizedDescription)")
         showAuthErrorAlert()
     }
 }
