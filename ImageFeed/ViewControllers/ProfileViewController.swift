@@ -13,7 +13,6 @@ final class ProfileViewController: UIViewController {
     // MARK: - Private variables
     private var profile: Profile?
     private let profileService = ProfileService.shared
-    private let tokenStorage = OAuth2TokenStorage()
     private var profileImageServiceObserver: NSObjectProtocol?
     
     private lazy var profileDescriptionLabel : UILabel = {

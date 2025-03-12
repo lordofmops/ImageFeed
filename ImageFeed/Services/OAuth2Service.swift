@@ -12,7 +12,7 @@ final class OAuth2Service {
     private var task: URLSessionTask?
     private var lastCode: String?
     
-    let authStorage = OAuth2TokenStorage()
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     
     private init() {}
     
@@ -65,7 +65,7 @@ final class OAuth2Service {
 
                 switch result {
                 case .success(let response):
-                    self.authStorage.token = response.accessToken
+                    self.oauth2TokenStorage.token = response.accessToken
                     completion(.success(response.accessToken))
                 case .failure(let error):
                     print("Network request failed: \(error)")

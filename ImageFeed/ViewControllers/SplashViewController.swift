@@ -12,7 +12,7 @@ final class SplashViewController: UIViewController {
     private let oauth2Service = OAuth2Service.shared
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
-    private let oauth2Storage = OAuth2TokenStorage()
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     
     private lazy var logo : UIImageView = {
         let logo = UIImageView(image: UIImage(named: "vector"))
@@ -58,7 +58,7 @@ final class SplashViewController: UIViewController {
     }
     
     private func checkAuthorization() {
-        if let _ = oauth2Storage.token {
+        if let _ = oauth2TokenStorage.token {
             UIBlockingProgressHUD.show()
             self.fetchProfile {
                 UIBlockingProgressHUD.dismiss()
@@ -71,7 +71,7 @@ final class SplashViewController: UIViewController {
     }
     
     private func showAuthScreen() {
-        guard oauth2Storage.token == nil else { return }
+        guard oauth2TokenStorage.token == nil else { return }
         
         let authScreen = AuthViewController()
         authScreen.delegate = self
@@ -121,7 +121,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
     
     private func fetchProfile(completion: @escaping () -> Void) {
-        guard let token = oauth2Storage.token else {
+        guard let token = oauth2TokenStorage.token else {
             print("No token found")
             return
         }

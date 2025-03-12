@@ -10,6 +10,7 @@ final class ProfileImageService {
     static let shared = ProfileImageService()
     static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
 
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private(set) var imageURL: String?
     private var task: URLSessionTask?
     private var lastUsername: String?
@@ -70,7 +71,7 @@ final class ProfileImageService {
             return nil
         }
 
-        guard let token = OAuth2TokenStorage().token else {
+        guard let token = oauth2TokenStorage.token else {
             print("No auth token found")
             return nil
         }
