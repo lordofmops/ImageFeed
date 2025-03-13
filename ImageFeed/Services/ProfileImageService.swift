@@ -23,11 +23,10 @@ final class ProfileImageService {
         lastUsername = nil
     }
     
-    func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
+    func fetchProfileImageURL(username: String) {
         assert(Thread.isMainThread)
         guard lastUsername != username else {
             print("[ERROR] [ProfileImageService/fetchProfileImageURL]: Profile image request already in progress for the same username")
-            completion(.failure(NetworkServiceError.invalidRequest))
             return
         }
 
@@ -36,7 +35,6 @@ final class ProfileImageService {
         
         guard let request = makeProfileImageRequest(username: username) else {
             print("[ERROR] [ProfileImageService/fetchProfileImageURL]: Failed to make profile image request")
-            completion(.failure(NetworkServiceError.invalidRequest))
             return
         }
         
@@ -51,7 +49,6 @@ final class ProfileImageService {
                         return
                     }
                     self.imageURL = image
-                    completion(.success(image))
                     print("[INFO] Profile image loaded")
                     
                     NotificationCenter.default
@@ -62,7 +59,6 @@ final class ProfileImageService {
                         )
                 case .failure(let error):
                     print("[ERROR] [ProfileImageService/fetchProfileImageURL]: Network request failed: \(error)")
-                    completion(.failure(error))
                 }
                 
                 self.task = nil

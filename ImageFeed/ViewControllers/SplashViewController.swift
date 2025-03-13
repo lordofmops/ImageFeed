@@ -143,12 +143,6 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
     
     private func fetchProfileImage(for username: String) {
-        profileImageService.fetchProfileImageURL(username: username) { result in
-            switch result {
-            case .success(let imageURL):
-            case .failure(let error):
-                print("[ERROR] [SplashViewController/fetchProfileImage]: Failed to fetch avatar URL: \(error)")
-            }
-        }
+        profileImageService.fetchProfileImageURL(username: username)
     }
 }
