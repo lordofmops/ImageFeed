@@ -93,11 +93,14 @@ final class SingleImageViewController: UIViewController {
         
         UIBlockingProgressHUD.show()
         imagesListService.changeLike(photoId: image.id, isLike: currentLike) {[weak self] result in
-            guard let self else { return }
+            guard let self else {
+                UIBlockingProgressHUD.dismiss()
+                return
+            }
             
             DispatchQueue.main.async {
                 switch result {
-                case .success():
+                case .success:
                     self.image = self.imagesListService.photos.filter { $0.id == image.id }.first
                     
                     self.setLike()

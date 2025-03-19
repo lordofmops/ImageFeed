@@ -83,11 +83,14 @@ final class ImagesListViewController: UIViewController, ImagesListCellDelegate {
         
         UIBlockingProgressHUD.show()
         imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) {[weak self] result in
-            guard let self else { return }
+            guard let self else {
+                UIBlockingProgressHUD.dismiss()
+                return
+            }
             
             DispatchQueue.main.async {
                 switch result {
-                case .success():
+                case .success:
                     self.photos[indexPath.row] = self.imagesListService.photos[indexPath.row]
                     
                     if let updatedCell = self.tableView.cellForRow(at: indexPath) as? ImagesListCell {

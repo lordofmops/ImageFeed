@@ -14,6 +14,8 @@ struct Photo {
     let regularImageURL: String
     let largeImageURL: String
     let isLiked: Bool
+    
+    private static let dateFormatter = ISO8601DateFormatter()
 }
 
 extension Photo {
@@ -26,7 +28,7 @@ extension Photo {
         self.isLiked = photoResult.likedByUser
         
         if let createdAt = photoResult.createdAt {
-            self.createdAt = ISO8601DateFormatter().date(from: createdAt)
+            self.createdAt = Self.dateFormatter.date(from: createdAt)
         } else {
             self.createdAt = nil
         }
