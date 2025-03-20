@@ -30,6 +30,7 @@ final class WebViewViewController: UIViewController,
     private lazy var webView: WKWebView = {
         let webView = WKWebView()
         webView.backgroundColor = .ypWhite
+        webView.accessibilityLabel = "UnsplashWebView"
         return webView
     }()
     

@@ -1,10 +1,3 @@
-//
-//  ImagesListCell.swift
-//  ImageFeed
-//
-//  Created by Дарья Дробышева on 09.09.2024.
-//
-
 import UIKit
 import Kingfisher
 
@@ -19,6 +12,8 @@ final class ImagesListCell: UITableViewCell {
     private lazy var likeButton: UIButton = {
         var button = UIButton()
         button.setImage(UIImage(named: "like_button_inactive"), for: .normal)
+        
+        button.accessibilityLabel = "like button"
         button.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         return button
     }()

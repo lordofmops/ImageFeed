@@ -26,19 +26,23 @@ final class ProfileViewController: UIViewController {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         label.textColor = .ypGray
+        label.accessibilityLabel = "@username"
         return label
     }()
     private lazy var nameLabel : UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         label.textColor = .ypWhite
+        label.accessibilityLabel = "Name"
         return label
     }()
     private lazy var exitButton : UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "exit_button"), for: .normal)
-        button.addTarget(self, action: #selector(didTapExitButton), for: .touchUpInside)
         button.tintColor = .ypRed
+        
+        button.accessibilityLabel = "logout button"
+        button.addTarget(self, action: #selector(didTapExitButton), for: .touchUpInside)
         return button
     }()
     private lazy var profilePicture : UIImageView = {
@@ -85,7 +89,7 @@ final class ProfileViewController: UIViewController {
             preferredStyle: .alert
         )
         
-        let retryAction = UIAlertAction(title: "Да", style: .default){ [weak self] _ in
+        let exitAction = UIAlertAction(title: "Да", style: .default){ [weak self] _ in
             guard let self else { return }
             self.profileLogoutService.logout()
             guard let window = UIApplication.shared.windows.first else {
@@ -97,7 +101,7 @@ final class ProfileViewController: UIViewController {
         }
         let cancelAction = UIAlertAction(title: "Нет", style: .default)
         
-        alert.addAction(retryAction)
+        alert.addAction(exitAction)
         alert.addAction(cancelAction)
 
         present(alert, animated: true)
