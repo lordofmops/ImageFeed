@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		150862FB2C93B43700039DE4 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150862FA2C93B43700039DE4 /* ProfileViewController.swift */; };
+		150FBC642D81CEDC003E4F61 /* ProfileLogoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FBC632D81CECD003E4F61 /* ProfileLogoutService.swift */; };
 		154777272C96377F00F528C8 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154777262C96377F00F528C8 /* SingleImageViewController.swift */; };
 		1569F6892D617AE200C95095 /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1569F6882D617ADE00C95095 /* OAuth2Service.swift */; };
 		1569F68D2D6184A100C95095 /* URLSession+data.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1569F68C2D61849E00C95095 /* URLSession+data.swift.swift */; };
@@ -44,6 +45,7 @@
 
 /* Begin PBXFileReference section */
 		150862FA2C93B43700039DE4 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		150FBC632D81CECD003E4F61 /* ProfileLogoutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLogoutService.swift; sourceTree = "<group>"; };
 		154777262C96377F00F528C8 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		1569F6882D617ADE00C95095 /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
 		1569F68C2D61849E00C95095 /* URLSession+data.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+data.swift.swift"; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 		1569F6872D617ACC00C95095 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				150FBC632D81CECD003E4F61 /* ProfileLogoutService.swift */,
 				1569F6B62D667AD100C95095 /* ImagesListService.swift */,
 				1569F6A02D64F1AD00C95095 /* ProfileImageService.swift */,
 				1569F69A2D64CCD800C95095 /* ProfileService.swift */,
@@ -302,6 +305,7 @@
 				1569F6BB2D66832E00C95095 /* PhotoResult.swift in Sources */,
 				15783BF62D39AC91000F1ED3 /* WebViewViewController.swift in Sources */,
 				1569F6A72D65DACD00C95095 /* ProfileImage.swift in Sources */,
+				150FBC642D81CEDC003E4F61 /* ProfileLogoutService.swift in Sources */,
 				1569F6892D617AE200C95095 /* OAuth2Service.swift in Sources */,
 				15A798E92C8E55420088C674 /* SceneDelegate.swift in Sources */,
 			);

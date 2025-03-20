@@ -13,36 +13,37 @@ final class ProfileViewController: UIViewController {
     // MARK: - Private variables
     private var profile: Profile?
     private let profileService = ProfileService.shared
-    private let tokenStorage = OAuth2TokenStorage()
+    private let profileLogoutService = ProfileLogoutService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
     
     private lazy var profileDescriptionLabel : UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        label.textColor = UIColor(named: "YP White")
+        label.textColor = .ypWhite
         return label
     }()
     private lazy var nicknameLabel : UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        label.textColor = UIColor(named: "YP Gray")
+        label.textColor = .ypGray
         return label
     }()
     private lazy var nameLabel : UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 23, weight: .bold)
-        label.textColor = UIColor(named: "YP White")
+        label.textColor = .ypWhite
         return label
     }()
     private lazy var exitButton : UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "Exit button"), for: .normal)
-        button.tintColor = UIColor(named: "YP Red")
+        button.setImage(UIImage(named: "exit_button"), for: .normal)
+        button.addTarget(self, action: #selector(didTapExitButton), for: .touchUpInside)
+        button.tintColor = .ypRed
         return button
     }()
     private lazy var profilePicture : UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "Profile picture")
+        imageView.image = UIImage(named: "profile_picture")
         imageView.tintColor = .gray
         return imageView
     }()
@@ -50,7 +51,7 @@ final class ProfileViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         // UI setup
-        view.backgroundColor = UIColor(named: "YP Black")
+        view.backgroundColor = .ypBlack
         setProfilePicture()
         setExitButton()
         setNameLabel()
@@ -75,7 +76,34 @@ final class ProfileViewController: UIViewController {
         updateImage()
     }
     
-    // MARK: - Private functions
+    // MARK: - Button action
+    @objc
+    private func didTapExitButton() {
+        let alert = UIAlertController(
+            title: "Пока-пока!",
+            message: "Уверены, что хотите выйти?",
+            preferredStyle: .alert
+        )
+        
+        let retryAction = UIAlertAction(title: "Да", style: .default){ [weak self] _ in
+            guard let self else { return }
+            self.profileLogoutService.logout()
+            guard let window = UIApplication.shared.windows.first else {
+                print("[ERROR] [ProfileViewController/didTapExitButton]: Unable to get window")
+                return
+            }
+            window.rootViewController = SplashViewController()
+            window.makeKeyAndVisible()
+        }
+        let cancelAction = UIAlertAction(title: "Нет", style: .default)
+        
+        alert.addAction(retryAction)
+        alert.addAction(cancelAction)
+
+        present(alert, animated: true)
+    }
+    
+    // MARK: - UI setup
     private func setProfilePicture(){
         profilePicture.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(profilePicture)
@@ -152,7 +180,7 @@ final class ProfileViewController: UIViewController {
             let url = URL(string: profileImageURL)
         else { return }
         
-        let placeholder = UIImage(named: "Backward button")
+        let placeholder = UIImage(named: "profile_picture")
         let processor = RoundCornerImageProcessor(cornerRadius: 61)
         
         profilePicture.kf.indicatorType = .activity

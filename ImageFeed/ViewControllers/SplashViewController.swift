@@ -12,10 +12,10 @@ final class SplashViewController: UIViewController {
     private let oauth2Service = OAuth2Service.shared
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
-    private let oauth2Storage = OAuth2TokenStorage()
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     
     private lazy var logo : UIImageView = {
-        let logo = UIImageView(image: UIImage(named: "Vector"))
+        let logo = UIImageView(image: UIImage(named: "vector"))
         return logo
     }()
     
@@ -23,7 +23,7 @@ final class SplashViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(named: "YP Black")
+        view.backgroundColor = .ypBlack
         setLogo()
     }
     
@@ -58,7 +58,7 @@ final class SplashViewController: UIViewController {
     }
     
     private func checkAuthorization() {
-        if let _ = oauth2Storage.token {
+        if let _ = oauth2TokenStorage.token {
             UIBlockingProgressHUD.show()
             self.fetchProfile {
                 UIBlockingProgressHUD.dismiss()
@@ -71,7 +71,7 @@ final class SplashViewController: UIViewController {
     }
     
     private func showAuthScreen() {
-        guard oauth2Storage.token == nil else { return }
+        guard oauth2TokenStorage.token == nil else { return }
         
         let authScreen = AuthViewController()
         authScreen.delegate = self
@@ -83,7 +83,7 @@ final class SplashViewController: UIViewController {
     
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else {
-            assertionFailure("Invalid window configuration")
+            assertionFailure("[ERROR] [SplashViewController/switchToTabBarController]: Invalid window configuration")
             return
         }
         
@@ -110,19 +110,18 @@ extension SplashViewController: AuthViewControllerDelegate {
             
             switch result {
             case .success(let token):
-                print("Auth token: \(token)")
                 self.fetchProfile {
                     UIBlockingProgressHUD.dismiss()
                 }
             case .failure(let error):
-                print("Fetching auth token error: \(error)")
+                print("[ERROR] [SplashViewController/fetchOAuthToken]: Fetching auth token error: \(error)")
             }
         }
     }
     
     private func fetchProfile(completion: @escaping () -> Void) {
-        guard let token = oauth2Storage.token else {
-            print("No token found")
+        guard let token = oauth2TokenStorage.token else {
+            print("[ERROR] [SplashViewController/fetchProfile]: No token found")
             return
         }
         
@@ -131,26 +130,19 @@ extension SplashViewController: AuthViewControllerDelegate {
             
             switch result {
             case .success(let profile):
-                print("Username: \(profile.loginName)")
+                print("[INFO] User successfully fetched. Username: \(profile.loginName)")
                 
                 fetchProfileImage(for: profile.username)
                 
                 self.switchToTabBarController()
             case .failure(let error):
-                print("Failed to fetch profile: \(error)")
+                print("[ERROR] [SplashViewController/fetchProfile]: Failed to fetch profile: \(error)")
             }
             completion()
         }
     }
     
     private func fetchProfileImage(for username: String) {
-        profileImageService.fetchProfileImageURL(username: username) { result in
-            switch result {
-            case .success(let imageURL):
-                print("Avatar URL: \(imageURL)")
-            case .failure(let error):
-                print("Failed to fetch avatar URL: \(error)")
-            }
-        }
+        profileImageService.fetchProfileImageURL(username: username)
     }
 }

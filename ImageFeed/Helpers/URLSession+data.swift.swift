@@ -1,9 +1,3 @@
-//
-//  URLSession+data.swift.swift
-//  ImageFeed
-//
-//  Created by Дарья Дробышева on 16.02.2025.
-//
 import Foundation
 
 enum NetworkError: Error {
@@ -28,14 +22,14 @@ extension URLSession {
                 if 200 ..< 300 ~= statusCode {
                     fulfillCompletionOnTheMainThread(.success(data))
                 } else {
-                    print("Network request failed with code: \(statusCode)")
+                    print("[ERROR] [URLSession/data]: Network request failed with code: \(statusCode)")
                     fulfillCompletionOnTheMainThread(.failure(NetworkError.httpStatusCode(statusCode)))
                 }
             } else if let error = error {
-                print("Network request failed with error: \(error.localizedDescription)")
+                print("[ERROR] [URLSession/data]: Network request failed with error: \(error.localizedDescription)")
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlRequestError(error)))
             } else {
-                print("Network request failed with unknown URLSession error")
+                print("[ERROR] [URLSession/data]: Network request failed with unknown URLSession error")
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlSessionError))
             }
         })
@@ -56,11 +50,11 @@ extension URLSession {
                     let decodedObject = try decoder.decode(T.self, from: data)
                     completion(.success(decodedObject))
                 } catch {
-                    print("Decoding error: \(error.localizedDescription), data: \(String(data: data, encoding: .utf8) ?? "")")
+                    print("[ERROR] [URLSession/objectTask]: Decoding error: \(error.localizedDescription), data: \(String(data: data, encoding: .utf8) ?? "")")
                     completion(.failure(error))
                 }
             case .failure(let error):
-                print("Network request failed: \(error)")
+                print("[ERROR] [URLSession/objectTask]: Network request failed: \(error)")
                 completion(.failure(error))
             }
         }

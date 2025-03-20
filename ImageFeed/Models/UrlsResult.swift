@@ -8,5 +8,5 @@ import Foundation
 
 public struct UrlsResult: Codable {
     let full: String
-    let thumb: String
+    let regular: String
 }

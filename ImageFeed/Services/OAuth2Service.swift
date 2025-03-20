@@ -12,13 +12,13 @@ final class OAuth2Service {
     private var task: URLSessionTask?
     private var lastCode: String?
     
-    let authStorage = OAuth2TokenStorage()
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     
     private init() {}
     
     func makeOAuthTokenRequest(code: String) -> URLRequest? {
         guard var urlComponents = URLComponents(string: "https://unsplash.com/oauth/token") else {
-            print("Failed to create URLComponents")
+            print("[ERROR] [OAuth2Service/makeOAuthTokenRequest]: Failed to create URLComponents")
             return nil
         }
         
@@ -31,7 +31,7 @@ final class OAuth2Service {
         ]
         
         guard let url = urlComponents.url else {
-            print( "Failed to create URL")
+            print( "[ERROR] [OAuth2Service/makeOAuthTokenRequest]: Failed to create URL")
             return nil
         }
         
@@ -43,7 +43,7 @@ final class OAuth2Service {
     func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         guard lastCode != code else {
-            print("Auth request already in progress with the same code")
+            print("[ERROR] [OAuth2Service/makeOAuthTokenRequest]: Auth request already in progress with the same code")
             completion(.failure(NetworkServiceError.invalidRequest))
             return
         }
@@ -54,7 +54,7 @@ final class OAuth2Service {
         guard
             let request = makeOAuthTokenRequest(code: code)
         else {
-            print("Failed to make auth token request")
+            print("[ERROR] [OAuth2Service/makeOAuthTokenRequest]: Failed to make auth token request")
             completion(.failure(NetworkServiceError.invalidRequest))
             return
         }
@@ -65,10 +65,11 @@ final class OAuth2Service {
 
                 switch result {
                 case .success(let response):
-                    self.authStorage.token = response.accessToken
+                    self.oauth2TokenStorage.token = response.accessToken
                     completion(.success(response.accessToken))
+                    print("[INFO] Auth token loaded, token: \(response.accessToken)")
                 case .failure(let error):
-                    print("Network request failed: \(error)")
+                    print("[ERROR] [OAuth2Service/makeOAuthTokenRequest]: Network request failed: \(error)")
                     completion(.failure(error))
                 }
 

@@ -14,16 +14,16 @@ final class AuthViewController: UIViewController {
     weak var delegate: AuthViewControllerDelegate?
     
     private lazy var authLogo : UIImageView = {
-        let logo = UIImageView(image: UIImage(named: "Unsplash logo"))
+        let logo = UIImageView(image: UIImage(named: "unsplash_logo"))
         return logo
     }()
     
     private lazy var loginButton : UIButton = {
         let button = UIButton()
         button.setTitle("Войти", for: .normal)
-        button.setTitleColor(UIColor(named: "YP Black"), for: .normal)
+        button.setTitleColor(.ypBlack, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-        button.backgroundColor = UIColor(named: "YP White")
+        button.backgroundColor = .ypWhite
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
         
@@ -36,7 +36,7 @@ final class AuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(named: "YP Black")
+        view.backgroundColor = .ypBlack
         setLoginButton()
         setAuthLogo()
         setBackwardButton()
@@ -79,10 +79,10 @@ final class AuthViewController: UIViewController {
     }
     
     private func setBackwardButton() {
-        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "Backward button (black)")
-        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "Backward button (black)")
+        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "back_button_black")
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "back_button_black")
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black")
+        navigationItem.backBarButtonItem?.tintColor = .ypBlack
     }
     
     private func showAuthErrorAlert() {
@@ -104,12 +104,12 @@ extension AuthViewController: WebViewViewControllerDelegate {
     }
 
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
-        print("User cancelled authentication")
+        print("[INFO] User cancelled authentication")
         navigationController?.popViewController(animated: true)
     }
     
     func webViewViewController(_ vc: WebViewViewController, didFailWithError error: Error) {
-            print("Authentication failed: \(error.localizedDescription)")
-            showAuthErrorAlert()
-        }
+        print("[ERROR] [AuthViewController/webViewViewController(didFailWithError:)]: Authentication failed: \(error.localizedDescription)")
+        showAuthErrorAlert()
+    }
 }
