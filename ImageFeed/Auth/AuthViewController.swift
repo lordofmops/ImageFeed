@@ -46,6 +46,9 @@ final class AuthViewController: UIViewController {
     @objc
     private func navigateToAuthScreen() {
         let authScreen = WebViewViewController()
+        let webViewPresenter = WebViewPresenter()
+        authScreen.presenter = webViewPresenter
+        webViewPresenter.view = authScreen
         authScreen.delegate = self
         
         navigationController?.pushViewController(authScreen, animated: true)
