@@ -1,11 +1,13 @@
 import Foundation
 import UIKit
 
-protocol ProfilePresenterProtocol {
+public protocol ProfilePresenterProtocol {
     var view: ProfileViewControllerProtocol? { get set }
     func viewDidLoad()
     func didTapLogoutButton()
-    func updateProfileImage()
+    func logoutHandler()
+    func updateProfileData(profile: Profile)
+    func updateProfileImage(with url: String)
 }
 
 final class ProfilePresenter: ProfilePresenterProtocol {
@@ -19,24 +21,32 @@ final class ProfilePresenter: ProfilePresenterProtocol {
     // MARK: - ProfilePresenterProtocol
     func viewDidLoad() {
         if let profile = profileService.profile {
-            view?.updateProfileData(profile: profile)
+            updateProfileData(profile: profile)
         }
         
-        updateProfileImage()
+        if let profileImageURL = imageService.imageURL {
+            updateProfileImage(with: profileImageURL)
+        }
     }
     
-    func updateProfileImage() {
-        guard let profileImageURL = imageService.imageURL,
-              let url = URL(string: profileImageURL)
+    func updateProfileData(profile: Profile) {
+        view?.updateProfileData(profile: profile)
+    }
+    
+    func updateProfileImage(with url: String) {
+        guard let url = URL(string: url)
         else {
             print("[ERROR] [ProfilePresenter/updateProfileImage]: Unable to create URL")
             return
         }
         view?.updateProfileImage(url: url)
-        print("[INFO] Profile image updated")
     }
     
     func didTapLogoutButton() {
+        view?.showLogoutAlert()
+    }
+             
+    func logoutHandler() {
         logoutService.logout()
         guard let window = UIApplication.shared.windows.first else {
             print("[ERROR] [ProfilePresenter/logoutHandler]: Unable to get window")

@@ -1,10 +1,11 @@
 import UIKit
 import Kingfisher
 
-protocol ProfileViewControllerProtocol: AnyObject {
+public protocol ProfileViewControllerProtocol: AnyObject {
     var presenter: ProfilePresenterProtocol? { get set }
     func updateProfileData(profile: Profile)
     func updateProfileImage(url: URL)
+    func didTapExitButton()
     func showLogoutAlert()
 }
 
@@ -41,7 +42,7 @@ final class ProfileViewController: UIViewController,
         button.tintColor = .ypRed
         
         button.accessibilityLabel = "logout button"
-        button.addTarget(self, action: #selector(showLogoutAlert), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapExitButton), for: .touchUpInside)
         return button
     }()
     private lazy var profilePicture : UIImageView = {
@@ -62,28 +63,33 @@ final class ProfileViewController: UIViewController,
         setProfileDescriptionLabel()
         
         // Fetching data
-        configure(ProfilePresenter())
+        self.presenter = ProfilePresenter()
+        self.presenter?.view = self
         
         self.profileImageServiceObserver = NotificationCenter.default.addObserver(
             forName: ProfileImageService.didChangeNotification,
             object: nil,
             queue: .main
-        ) { [weak self] _ in
+        ) { [weak self] notification in
             guard let self else { return }
             
-            presenter?.updateProfileImage()
+            if let userInfo = notification.userInfo,
+               let imageUrl = userInfo["URL"] as? String {
+                presenter?.updateProfileImage(with: imageUrl)
+            } else {
+                print("[ERROR] Failed to extract image URL from notification")
+            }
         }
         
         presenter?.viewDidLoad()
     }
     
-    func configure(_ presenter: ProfilePresenterProtocol) {
-        self.presenter = presenter
-        self.presenter?.view = self
-     }
-    
     // MARK: - Button action
     @objc
+    func didTapExitButton() {
+        presenter?.didTapLogoutButton()
+    }
+    
     func showLogoutAlert() {
         let alert = UIAlertController(
             title: "Пока-пока!",
@@ -93,7 +99,7 @@ final class ProfileViewController: UIViewController,
         
         let exitAction = UIAlertAction(title: "Да", style: .default){ [weak self] _ in
             guard let self else { return }
-            presenter?.didTapLogoutButton()
+            presenter?.logoutHandler()
         }
         let cancelAction = UIAlertAction(title: "Нет", style: .default)
         

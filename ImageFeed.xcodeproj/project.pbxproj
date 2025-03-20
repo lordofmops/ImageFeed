@@ -143,7 +143,6 @@
 				1569F6902D6240F200C95095 /* SplashViewController.swift */,
 				15A798EA2C8E55420088C674 /* ImagesListViewController.swift */,
 				154777262C96377F00F528C8 /* SingleImageViewController.swift */,
-				150862FA2C93B43700039DE4 /* ProfileViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -152,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				1521DDF32D8C7C0C00384BD8 /* ProfilePresenter.swift */,
+				150862FA2C93B43700039DE4 /* ProfileViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
