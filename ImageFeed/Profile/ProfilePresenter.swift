@@ -1,5 +1,4 @@
 import Foundation
-import UIKit
 
 public protocol ProfilePresenterProtocol {
     var view: ProfileViewControllerProtocol? { get set }
@@ -48,12 +47,6 @@ final class ProfilePresenter: ProfilePresenterProtocol {
              
     func logoutHandler() {
         logoutService.logout()
-        guard let window = UIApplication.shared.windows.first else {
-            print("[ERROR] [ProfilePresenter/logoutHandler]: Unable to get window")
-            return
-        }
-        window.rootViewController = SplashViewController()
-        window.makeKeyAndVisible()
     }
 }
 

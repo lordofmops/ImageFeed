@@ -43,7 +43,9 @@ final class ImagesListViewController: UIViewController, ImagesListCellDelegate {
                 queue: .main,
                 using: { [weak self] _ in
                     guard let self = self else { return }
-                    self.updateTableViewAnimated()
+                    DispatchQueue.main.async {
+                        self.updateTableViewAnimated()
+                    }
                 }
             )
         

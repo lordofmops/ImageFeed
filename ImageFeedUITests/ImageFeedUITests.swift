@@ -1,7 +1,7 @@
 @testable import ImageFeed
 import XCTest
 
-class ImageFeedUITests: XCTestCase {
+final class ImageFeedUITests: XCTestCase {
     private let app = XCUIApplication()
     
     override func setUpWithError() throws {
@@ -21,13 +21,13 @@ class ImageFeedUITests: XCTestCase {
         XCTAssertTrue(loginTextField.waitForExistence(timeout: 10))
         loginTextField.tap()
         loginTextField.typeText("")
-        webView.swipeDown()
+        app.toolbars.buttons["Done"].swipeDown()
         
         let passwordTextField = webView.descendants(matching: .secureTextField).element
         XCTAssertTrue(passwordTextField.waitForExistence(timeout: 10))
         passwordTextField.tap()
         passwordTextField.typeText("")
-        webView.swipeUp()
+        app.toolbars.buttons["Done"].swipeDown()
         
         webView.buttons["Login"].tap()
         
@@ -39,20 +39,30 @@ class ImageFeedUITests: XCTestCase {
     
     func testFeed() throws {
         let tablesQuery = app.tables
+        
+        let table = app.tables.firstMatch
+        XCTAssertTrue(table.waitForExistence(timeout: 5))
             
         let cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
         cell.swipeUp()
         
         sleep(2)
         
-        let cellToLike = tablesQuery.children(matching: .cell).element(boundBy: 1)
+        var cellToLike = tablesQuery.children(matching: .cell).element(boundBy: 1)
+        for i in 1...3 {
+            cellToLike = tablesQuery.children(matching: .cell).element(boundBy: i)
+            if cellToLike.isHittable && cellToLike.buttons["like button"].isHittable {
+                return
+            }
+        }
         
         cellToLike.buttons["like button"].tap()
+        sleep(3)
         cellToLike.buttons["like button"].tap()
         
         sleep(2)
         
-        while !cellToLike.isHittable {
+        while !(cellToLike.isHittable) {
             cellToLike.swipeUp()
         }
         cellToLike.tap()

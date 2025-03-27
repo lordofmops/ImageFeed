@@ -100,6 +100,12 @@ final class ProfileViewController: UIViewController,
         let exitAction = UIAlertAction(title: "Да", style: .default){ [weak self] _ in
             guard let self else { return }
             presenter?.logoutHandler()
+            guard let window = UIApplication.shared.windows.first else {
+                print("[ERROR] [ProfileViewController/showLogoutAlert]: Unable to get window")
+                return
+            }
+            window.rootViewController = SplashViewController()
+            window.makeKeyAndVisible()
         }
         let cancelAction = UIAlertAction(title: "Нет", style: .default)
         
