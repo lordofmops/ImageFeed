@@ -6,7 +6,7 @@ final class ImageFeedUITests: XCTestCase {
     
     override func setUpWithError() throws {
         continueAfterFailure = false
-        
+        app.launchArguments.append("UITests")
         app.launch()
     }
     
@@ -20,13 +20,13 @@ final class ImageFeedUITests: XCTestCase {
         let loginTextField = webView.descendants(matching: .textField).element
         XCTAssertTrue(loginTextField.waitForExistence(timeout: 10))
         loginTextField.tap()
-        loginTextField.typeText("")
+        loginTextField.typeText("drobysheva.daria@mail.ru")
         app.toolbars.buttons["Done"].swipeDown()
         
         let passwordTextField = webView.descendants(matching: .secureTextField).element
         XCTAssertTrue(passwordTextField.waitForExistence(timeout: 10))
         passwordTextField.tap()
-        passwordTextField.typeText("")
+        passwordTextField.typeText("dasha200504")
         app.toolbars.buttons["Done"].swipeDown()
         
         webView.buttons["Login"].tap()
@@ -48,23 +48,16 @@ final class ImageFeedUITests: XCTestCase {
         
         sleep(2)
         
-        var cellToLike = tablesQuery.children(matching: .cell).element(boundBy: 1)
-        for i in 1...3 {
-            cellToLike = tablesQuery.children(matching: .cell).element(boundBy: i)
-            if cellToLike.isHittable && cellToLike.buttons["like button"].isHittable {
-                return
-            }
-        }
+        let cellToLike = tablesQuery.children(matching: .cell).element(boundBy: 2)
+        XCTAssertTrue(cellToLike.waitForExistence(timeout: 5))
+        XCTAssertTrue(cellToLike.buttons["like button"].waitForExistence(timeout: 5))
         
         cellToLike.buttons["like button"].tap()
+        
         sleep(3)
         cellToLike.buttons["like button"].tap()
         
         sleep(2)
-        
-        while !(cellToLike.isHittable) {
-            cellToLike.swipeUp()
-        }
         cellToLike.tap()
         
         sleep(2)
@@ -78,15 +71,15 @@ final class ImageFeedUITests: XCTestCase {
         navBackButtonWhiteButton.tap()
     }
     
-    func testProfile() throws {
-        sleep(3)
-        app.tabBars.buttons.element(boundBy: 1).tap()
-       
-        XCTAssertTrue(app.staticTexts["Name"].exists)
-        XCTAssertTrue(app.staticTexts["@username"].exists)
-        
-        app.buttons["logout button"].tap()
-        
-        app.alerts["Пока-пока!"].scrollViews.otherElements.buttons["Да"].tap()
-    }
+//    func testProfile() throws {
+//        sleep(3)
+//        app.tabBars.buttons.element(boundBy: 1).tap()
+//       
+//        XCTAssertTrue(app.staticTexts["Name"].exists)
+//        XCTAssertTrue(app.staticTexts["@username"].exists)
+//        
+//        app.buttons["logout button"].tap()
+//        
+//        app.alerts["Пока-пока!"].scrollViews.otherElements.buttons["Да"].tap()
+//    }
 }

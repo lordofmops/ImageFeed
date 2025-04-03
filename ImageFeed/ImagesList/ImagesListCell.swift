@@ -12,7 +12,9 @@ final class ImagesListCell: UITableViewCell {
     private lazy var likeButton: UIButton = {
         var button = UIButton()
         button.setImage(UIImage(named: "like_button_inactive"), for: .normal)
+        button.tintColor = .ypWhite
         
+        button.isAccessibilityElement = true
         button.accessibilityLabel = "like button"
         button.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         return button
@@ -85,8 +87,6 @@ final class ImagesListCell: UITableViewCell {
                                 ? UIImage(named: "like_button_active")
                                 : UIImage(named: "like_button_inactive")
         likeButton.setImage(likeButtonImage, for: .normal)
-        
-//        setupGradient()
     }
     
     func setLike(isLiked: Bool) {
@@ -109,8 +109,8 @@ final class ImagesListCell: UITableViewCell {
             likeButton.heightAnchor.constraint(equalToConstant: 42),
             likeButton.widthAnchor.constraint(equalToConstant: 42),
             
-            likeButton.topAnchor.constraint(equalTo: cellImage.topAnchor),
-            likeButton.trailingAnchor.constraint(equalTo: cellImage.trailingAnchor)
+            likeButton.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 4),
+            likeButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16)
         ])
     }
     

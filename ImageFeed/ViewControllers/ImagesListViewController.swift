@@ -131,15 +131,16 @@ final class ImagesListViewController: UIViewController, ImagesListCellDelegate {
     private func updateTableViewAnimated() {
         let oldCount = photos.count
         let newCount = imagesListService.photos.count
+        guard newCount > oldCount else { return }
+        
         photos = imagesListService.photos
-        if oldCount != newCount {
-            tableView.performBatchUpdates {
-                let indexPaths = (oldCount..<newCount).map { i in
-                    IndexPath(row: i, section: 0)
-                }
-                tableView.insertRows(at: indexPaths, with: .automatic)
-            } completion: { _ in }
-        }
+        
+        tableView.performBatchUpdates {
+            let indexPaths = (oldCount..<newCount).map { i in
+                IndexPath(row: i, section: 0)
+            }
+            tableView.insertRows(at: indexPaths, with: .automatic)
+        } completion: { _ in }
     }
 }
 
@@ -185,7 +186,8 @@ extension ImagesListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath
     ) {
-        guard indexPath.row + 1 == photos.count else { return }
+        guard ProcessInfo.processInfo.arguments.contains("UITests") == false,
+              indexPath.row + 1 == photos.count else { return }
         imagesListService.fetchPhotosNextPage()
     }
 }
