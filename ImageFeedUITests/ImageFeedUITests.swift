@@ -20,13 +20,13 @@ final class ImageFeedUITests: XCTestCase {
         let loginTextField = webView.descendants(matching: .textField).element
         XCTAssertTrue(loginTextField.waitForExistence(timeout: 10))
         loginTextField.tap()
-        loginTextField.typeText("drobysheva.daria@mail.ru")
+        loginTextField.typeText("")
         app.toolbars.buttons["Done"].swipeDown()
         
         let passwordTextField = webView.descendants(matching: .secureTextField).element
         XCTAssertTrue(passwordTextField.waitForExistence(timeout: 10))
         passwordTextField.tap()
-        passwordTextField.typeText("dasha200504")
+        passwordTextField.typeText("")
         app.toolbars.buttons["Done"].swipeDown()
         
         webView.buttons["Login"].tap()
@@ -71,15 +71,15 @@ final class ImageFeedUITests: XCTestCase {
         navBackButtonWhiteButton.tap()
     }
     
-//    func testProfile() throws {
-//        sleep(3)
-//        app.tabBars.buttons.element(boundBy: 1).tap()
-//       
-//        XCTAssertTrue(app.staticTexts["Name"].exists)
-//        XCTAssertTrue(app.staticTexts["@username"].exists)
-//        
-//        app.buttons["logout button"].tap()
-//        
-//        app.alerts["Пока-пока!"].scrollViews.otherElements.buttons["Да"].tap()
-//    }
+    func testProfile() throws {
+        sleep(3)
+        app.tabBars.buttons.element(boundBy: 1).tap()
+       
+        XCTAssertTrue(app.staticTexts["Name"].exists)
+        XCTAssertTrue(app.staticTexts["@username"].exists)
+        
+        app.buttons["logout button"].tap()
+        
+        app.alerts["Пока-пока!"].scrollViews.otherElements.buttons["Да"].tap()
+    }
 }
