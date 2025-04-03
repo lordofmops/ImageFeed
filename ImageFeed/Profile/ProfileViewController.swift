@@ -1,19 +1,19 @@
-//
-//  ProfileViewController.swift
-//  ImageFeed
-//
-//  Created by Дарья Дробышева on 13.09.2024.
-//
-
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+public protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? { get set }
+    func updateProfileData(profile: Profile)
+    func updateProfileImage(url: URL)
+    func didTapExitButton()
+    func showLogoutAlert()
+}
+
+final class ProfileViewController: UIViewController,
+                                   ProfileViewControllerProtocol {
+    var presenter: ProfilePresenterProtocol?
     
     // MARK: - Private variables
-    private var profile: Profile?
-    private let profileService = ProfileService.shared
-    private let profileLogoutService = ProfileLogoutService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
     
     private lazy var profileDescriptionLabel : UILabel = {
@@ -26,19 +26,23 @@ final class ProfileViewController: UIViewController {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         label.textColor = .ypGray
+        label.accessibilityLabel = "@username"
         return label
     }()
     private lazy var nameLabel : UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         label.textColor = .ypWhite
+        label.accessibilityLabel = "Name"
         return label
     }()
     private lazy var exitButton : UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "exit_button"), for: .normal)
-        button.addTarget(self, action: #selector(didTapExitButton), for: .touchUpInside)
         button.tintColor = .ypRed
+        
+        button.accessibilityLabel = "logout button"
+        button.addTarget(self, action: #selector(didTapExitButton), for: .touchUpInside)
         return button
     }()
     private lazy var profilePicture : UIImageView = {
@@ -59,37 +63,45 @@ final class ProfileViewController: UIViewController {
         setProfileDescriptionLabel()
         
         // Fetching data
-        if let profile = profileService.profile {
-            self.profile = profile
-            updateProfileData()
+        self.presenter = ProfilePresenter()
+        self.presenter?.view = self
+        
+        self.profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.didChangeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] notification in
+            guard let self else { return }
+            
+            if let userInfo = notification.userInfo,
+               let imageUrl = userInfo["URL"] as? String {
+                presenter?.updateProfileImage(with: imageUrl)
+            } else {
+                print("[ERROR] Failed to extract image URL from notification")
+            }
         }
         
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                guard let self = self else { return }
-                self.updateImage()
-            }
-        updateImage()
+        presenter?.viewDidLoad()
     }
     
     // MARK: - Button action
     @objc
-    private func didTapExitButton() {
+    func didTapExitButton() {
+        presenter?.didTapLogoutButton()
+    }
+    
+    func showLogoutAlert() {
         let alert = UIAlertController(
             title: "Пока-пока!",
             message: "Уверены, что хотите выйти?",
             preferredStyle: .alert
         )
         
-        let retryAction = UIAlertAction(title: "Да", style: .default){ [weak self] _ in
+        let exitAction = UIAlertAction(title: "Да", style: .default){ [weak self] _ in
             guard let self else { return }
-            self.profileLogoutService.logout()
+            presenter?.logoutHandler()
             guard let window = UIApplication.shared.windows.first else {
-                print("[ERROR] [ProfileViewController/didTapExitButton]: Unable to get window")
+                print("[ERROR] [ProfileViewController/showLogoutAlert]: Unable to get window")
                 return
             }
             window.rootViewController = SplashViewController()
@@ -97,10 +109,30 @@ final class ProfileViewController: UIViewController {
         }
         let cancelAction = UIAlertAction(title: "Нет", style: .default)
         
-        alert.addAction(retryAction)
+        alert.addAction(exitAction)
         alert.addAction(cancelAction)
 
         present(alert, animated: true)
+    }
+    
+    func updateProfileData(profile: Profile) {
+        profileDescriptionLabel.text = profile.bio
+        nicknameLabel.text = profile.loginName
+        nameLabel.text = profile.name
+    }
+    
+    func updateProfileImage(url: URL) {
+        let placeholder = UIImage(named: "profile_picture")
+        let processor = RoundCornerImageProcessor(cornerRadius: 61)
+        
+        profilePicture.kf.indicatorType = .activity
+        profilePicture.kf.setImage(
+            with: url,
+            placeholder: placeholder,
+            options: [
+                .processor(processor)
+            ]
+        )
     }
     
     // MARK: - UI setup
@@ -164,32 +196,5 @@ final class ProfileViewController: UIViewController {
             profileDescriptionLabel.leadingAnchor.constraint(equalTo: profilePicture.leadingAnchor),
             profileDescriptionLabel.topAnchor.constraint(equalTo: nicknameLabel.bottomAnchor, constant: 8)
         ])
-    }
-    
-    private func updateProfileData() {
-        guard let profile else { return }
-        
-        profileDescriptionLabel.text = profile.bio
-        nicknameLabel.text = profile.loginName
-        nameLabel.text = profile.name
-    }
-    
-    private func updateImage() {
-        guard
-            let profileImageURL = ProfileImageService.shared.imageURL,
-            let url = URL(string: profileImageURL)
-        else { return }
-        
-        let placeholder = UIImage(named: "profile_picture")
-        let processor = RoundCornerImageProcessor(cornerRadius: 61)
-        
-        profilePicture.kf.indicatorType = .activity
-        profilePicture.kf.setImage(
-            with: url,
-            placeholder: placeholder,
-            options: [
-                .processor(processor)
-            ]
-        )
     }
 }

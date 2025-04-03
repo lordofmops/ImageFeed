@@ -1,9 +1,3 @@
-//
-//  AuthViewController.swift
-//  ImageFeed
-//
-//  Created by Дарья Дробышева on 16.01.2025.
-//
 import UIKit
 
 protocol AuthViewControllerDelegate: AnyObject {
@@ -27,6 +21,7 @@ final class AuthViewController: UIViewController {
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
         
+        button.accessibilityIdentifier = "Authenticate"
         button.addTarget(self, action: #selector(navigateToAuthScreen), for: .touchUpInside)
         
         return button
@@ -46,6 +41,10 @@ final class AuthViewController: UIViewController {
     @objc
     private func navigateToAuthScreen() {
         let authScreen = WebViewViewController()
+        let authHelper = AuthHelper()
+        let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+        authScreen.presenter = webViewPresenter
+        webViewPresenter.view = authScreen
         authScreen.delegate = self
         
         navigationController?.pushViewController(authScreen, animated: true)
